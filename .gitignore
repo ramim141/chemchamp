@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Production build
+dist/
+**/dist/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.local
+**/.env
+**/.env.*
+!**/.env.example
+
+# Temporary dumps, archives and repomix files
+all_code.txt
+**/all_code.txt
+index.zip
+**/index.zip
+repomix-output.xml
+**/repomix-output.xml
+*.zip
+*.tar.gz
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/

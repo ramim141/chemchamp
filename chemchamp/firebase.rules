@@ -1,0 +1,110 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // হেল্পার ফাংশন
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    function isAdmin() {
+      return isAuthenticated() && (
+        !exists(/databases/$(database)/documents/users/$(request.auth.uid)) ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin" ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "super_admin"
+      );
+    }
+
+    // ১. সিস্টেম সেটিংস ও ল্যান্ডিং পেজ কনফিগ (পাবলিক পড়তে পারবে, লিখবে অ্যাডমিন/অথোরাইজড)
+    match /system_settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ২. মক ও মডেল টেস্ট (পাবলিক ও শিক্ষার্থী পড়তে পারবে, লিখবে অ্যাডমিন)
+    match /mockExams/{examId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ৩. অ্যাডমিশন স্পেশাল এজ (পাবলিক ও শিক্ষার্থী পড়তে পারবে, লিখবে অ্যাডমিন)
+    match /admissionEdge/{docId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ৪. ফিচার ফ্ল্যাগস
+    match /featureFlags/{flagId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ইউজার প্রোফাইল: যে কেউ নিজেরটা পড়তে ও আপডেট করতে পারবে
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isOwner(userId) || isAdmin();
+      
+      // সাবকালেকশন (mistakeBox, dailyMissions)
+      match /{subcollection}/{docId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // চ্যাপ্টার, টপিক, সাব-টপিক, প্রশ্ন, ফ্ল্যাশকার্ড, ফর্মুলা ও পর্যায় সারণি
+    match /chapters/{chapterId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+
+      match /topics/{topicId} {
+        allow read: if true;
+        allow write: if isAuthenticated();
+      }
+    }
+    match /topics/{topicId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /subtopics/{subtopicId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /questions/{questionId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /flashcards/{cardId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /formulas/{formulaId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /periodicElements/{elementId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ডাউট বক্স: স্টুডেন্ট ক্রিয়েট করবে, অ্যাডমিন সমাধান দেবে
+    match /doubtBox/{doubtId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
+
+    // ৫. নোটিশ ও ব্রডকাস্ট এনাউন্সমেন্ট
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ৬. পরীক্ষার রেজাল্ট ও অ্যাটেম্পট লগ
+    match /examAttempts/{attemptId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+  }
+}

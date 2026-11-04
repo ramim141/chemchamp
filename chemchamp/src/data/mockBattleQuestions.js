@@ -1,0 +1,88 @@
+export const BATTLE_QUESTIONS = [
+  {
+    id: "bq_1",
+    question: "কোন মৌলটির ইলেকট্রন আসক্তি সর্বাধিক?",
+    options: ["F (ফ্লোরিন)", "Cl (ক্লোরিন)", "Br (ব্রোমিন)", "I (আয়োডিন)"],
+    answerIndex: 1,
+    timeLimit: 10,
+    hint: "ক্লোরিনের ৩p অরবিটালের আকার ফ্লোরিনের চেয়ে বড় হওয়ায় ইলেকট্রন ঘনত্ব কম ও আসক্তি বেশি।",
+  },
+  {
+    id: "bq_2",
+    question: "pH + pOH এর মান সাধারণ তাপমাত্রায় (২৫°C) কত?",
+    options: ["৭", "১০", "১৪", "১.০ × ১০⁻¹⁴"],
+    answerIndex: 2,
+    timeLimit: 10,
+    hint: "Kw = [H+][OH-] = 10^-14 => pH + pOH = 14",
+  },
+  {
+    id: "bq_3",
+    question: "উর্টজ বিক্রিয়ায় ব্যবহৃত শুষ্ক দ্রাবক কোনটি?",
+    options: ["অ্যালকোহল", "শুষ্ক ইথার (Dry Ether)", "বেনজিন", "পানি"],
+    answerIndex: 1,
+    timeLimit: 10,
+    hint: "সোডিয়াম পানির সাথে তীব্র বিক্রিয়া করে, তাই নির্জল ড্রাই ইথার ব্যবহার করা হয়।",
+  },
+  {
+    id: "bq_4",
+    question: "d-অরবিটালে সর্বোচ্চ কয়টি ইলেকট্রন থাকতে পারে?",
+    options: ["২টি", "৬টি", "১০টি", "১৪টি"],
+    answerIndex: 2,
+    timeLimit: 10,
+    hint: "d অরবিটালের জন্য l=2, মোট ধারণক্ষমতা 2(2l+1) = 10",
+  },
+  {
+    id: "bq_5",
+    question: "কোন গ্যাসটি পরম শূন্য তাপমাত্রায় (০ কেলভিন) পৌঁছার পূর্বেই তরল হয়?",
+    options: ["সব গ্যাস", "শুধুমাত্র He", "শুধুমাত্র H2", "কোনোটিই নয়"],
+    answerIndex: 0,
+    timeLimit: 10,
+    hint: "বাস্তব সকল গ্যাস পরম শূন্য তাপমাত্রার পূর্বেই তরলে রূপান্তরিত হয়ে যায়।",
+  },
+  {
+    id: "bq_6",
+    question: "লুকাস বিকারক কোনটি?",
+    options: [
+      "অনার্দ্র ZnCl2 + গাঢ় HCl",
+      "লঘু HCl + Zn",
+      "গাঢ় H2SO4 + HNO3",
+      "লিকার অ্যামোনিয়া",
+    ],
+    answerIndex: 0,
+    timeLimit: 10,
+    hint: "লুকাস বিকারক দিয়ে ১°, ২° ও ৩° অ্যালকোহল শনাক্ত করা হয়।",
+  },
+  {
+    id: "bq_7",
+    question: "ক্রোমিয়ামের (Cr-24) সঠিক ইলেকট্রন বিন্যাসের বহিঃস্থ স্তর কোনটি?",
+    options: ["3d^4 4s^2", "3d^5 4s^1", "3d^6 4s^0", "3d^3 4s^2 4p^1"],
+    answerIndex: 1,
+    timeLimit: 10,
+    hint: "অর্ধপূর্ণ d^5 অরবিটালের অধিক স্থিতিশীলতার জন্য 4s^1 3d^5 হয়।",
+  },
+  {
+    id: "bq_8",
+    question: "STP তে ১ মোল যেকোনো গ্যাসের আয়তন কত লিটার?",
+    options: ["২২.৪ L", "২৪.৭৮৯ L", "১ L", "২২৪০০ L"],
+    answerIndex: 0,
+    timeLimit: 10,
+    hint: "STP (0°C ও 1 atm) তে 22.4 L, আর SATP তে 24.789 L।",
+  },
+];
+
+export const LEADERBOARD_DATA = {
+  daily: [
+    { rank: 1, name: "তানভীর হাসান", college: "নটর ডেম কলেজ", xp: 1450, accuracy: 96, avatar: "👨‍🔬" },
+    { rank: 2, name: "সাদিয়া রহমান", college: "ভিকারুননিসা নূন কলেজ", xp: 1380, accuracy: 94, avatar: "👩‍🔬" },
+    { rank: 3, name: "আহমেদ জুবায়ের", college: "ঢাকা কলেজ", xp: 1290, accuracy: 92, avatar: "🧪" },
+    { rank: 4, name: "ফারহান কবির", college: "রাজশাহী কলেজ", xp: 1140, accuracy: 89, avatar: "⚡" },
+    { rank: 5, name: "নাফিসা আনজুম", college: "চট্টগ্রাম কলেজ", xp: 1050, accuracy: 87, avatar: "✨" },
+  ],
+  weekly: [
+    { rank: 1, name: "সাদিয়া রহমান", college: "ভিকারুননিসা নূন কলেজ", xp: 8750, accuracy: 95, avatar: "👩‍🔬" },
+    { rank: 2, name: "তানভীর হাসান", college: "নটর ডেম কলেজ", xp: 8420, accuracy: 94, avatar: "👨‍🔬" },
+    { rank: 3, name: "মেহরাব হোসেন", college: "আইডিয়াল কলেজ", xp: 7910, accuracy: 91, avatar: "🏆" },
+    { rank: 4, name: "আহমেদ জুবায়ের", college: "ঢাকা কলেজ", xp: 7350, accuracy: 90, avatar: "🧪" },
+    { rank: 5, name: "রুবাইয়াত ইসলাম", college: "সিলেট এম সি কলেজ", xp: 6890, accuracy: 88, avatar: "🔥" },
+  ],
+};

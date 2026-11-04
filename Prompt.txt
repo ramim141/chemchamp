@@ -1,0 +1,865 @@
+# HSC CHEMISTRY LEARNING PLATFORM
+## AI AGENT DEVELOPMENT PLAYBOOK
+
+PROJECT STACK:
+React JSX, Vite, Tailwind CSS, React Router, Firebase Authentication, Cloud Firestore, Firebase Storage, Firebase Cloud Functions, ImgBB, Vitest, Playwright.
+
+PROJECT RULES:
+- Work in the existing repository.
+- Read AGENTS.md and README.md before each task.
+- Never overwrite working code without inspection.
+- Implement only the requested milestone.
+- Never fake successful functionality.
+- Run relevant tests and report actual results.
+- Never expose API keys or service-account credentials.
+- Never deploy without explicit approval.
+- Stop and report blockers instead of hiding them.
+- Preserve existing working features.
+- Update documentation when architecture changes.
+
+==================================================
+PROMPT 0 — PROJECT DISCOVERY
+==================================================
+
+Inspect the current repository, installed tools, Git status, and existing files.
+
+Do not implement features yet.
+
+Report:
+1. Current repository state.
+2. Required tools and dependencies.
+3. Proposed application architecture.
+4. Risks and technical decisions.
+5. A milestone implementation plan.
+6. Commands needed to initialize the project.
+
+If the repository is empty, prepare a safe initialization plan. Do not overwrite any existing files.
+
+==================================================
+PROMPT 1 — PRODUCT REQUIREMENTS
+==================================================
+
+Write a detailed PRD for an HSC Chemistry Learning Platform for Bangladeshi college students.
+
+Include:
+- Student and lecturer/admin personas.
+- Student dashboard.
+- Course, chapter, topic and lecture management.
+- Lecture notes, shortcut notes and PDF downloads.
+- MCQ and CQ question banks.
+- Manual question entry.
+- JSON question import/export.
+- Question image uploads using ImgBB.
+- Topic-wise practice.
+- Timed model tests.
+- Automatic MCQ grading.
+- Manual CQ evaluation.
+- Results, analytics and leaderboard.
+- Bookmarks and learning progress.
+- Free video lecture archive.
+- Authentication, authorization and privacy.
+
+For each feature define user stories, acceptance criteria, permissions, dependencies and failure states.
+
+Save the document as docs/PRD.md. Do not build the application yet.
+
+==================================================
+PROMPT 2 — ARCHITECTURE & DATABASE DESIGN
+==================================================
+
+Design the application architecture and Firestore schema.
+
+Define:
+- Frontend feature modules.
+- Data-access and service layers.
+- Firebase Authentication flow.
+- Lecturer/admin role assignment.
+- Firestore collections and document shapes.
+- Public content versus private answer keys.
+- Question and exam relationships.
+- Student progress and attempt history.
+- Firestore indexes and pagination.
+- Cloud Functions responsibilities.
+- Storage paths and permissions.
+- Error handling and data validation.
+
+Document the schema with sample documents.
+
+Use separate public question content and protected answer-key data when necessary.
+
+Document how the application avoids duplicate exam submissions, client-controlled scores, excessive database reads and unbounded document growth.
+
+Save as docs/ARCHITECTURE.md and docs/DATABASE_SCHEMA.md.
+
+==================================================
+PROMPT 3 — UI/UX DESIGN PLAN
+==================================================
+
+Create the complete responsive UI/UX specification.
+
+Design a clean, modern, mobile-first educational platform.
+
+Include:
+- Color tokens, typography, spacing and component conventions.
+- Student mobile navigation.
+- Lecturer dashboard sidebar.
+- Student dashboard.
+- Course and chapter pages.
+- Lecture detail page.
+- Notes library.
+- Manual MCQ/CQ editor.
+- JSON import wizard.
+- Exam interface.
+- Result page and leaderboard.
+- Loading, empty, error and confirmation states.
+- Bangla and English content support.
+- Keyboard accessibility and readable chemistry notation.
+
+Avoid cluttered layouts, excessive gradients and oversized cards.
+
+Create a page inventory and reusable component inventory in docs/UI_UX.md.
+
+==================================================
+PROMPT 4 — REPOSITORY INITIALIZATION
+==================================================
+
+Initialize a React JSX application with Vite if the repository is empty.
+
+Configure:
+- React Router.
+- Tailwind CSS using the current official Vite integration.
+- Lucide React.
+- ESLint.
+- Vitest and React Testing Library.
+- Playwright for later end-to-end testing.
+- Environment variable conventions.
+- Git ignore rules.
+
+Create a maintainable feature-based folder structure.
+
+Create:
+- README.md.
+- .env.example.
+- AGENTS.md.
+- docs/ directory.
+
+Do not add real credentials. Run the initial build and tests.
+
+==================================================
+PROMPT 5 — DESIGN SYSTEM & SHARED COMPONENTS
+==================================================
+
+Implement the shared design system.
+
+Build reusable:
+- Buttons.
+- Inputs and textareas.
+- Select controls.
+- Cards.
+- Dialogs.
+- Dropdowns.
+- Badges.
+- Tables and mobile card alternatives.
+- Toast notifications.
+- Skeleton loaders.
+- Empty states.
+- Error states.
+- Page headers.
+- Breadcrumbs.
+- Pagination.
+
+Ensure responsive behavior, keyboard accessibility, focus states and consistent visual spacing.
+
+Write component tests and verify mobile and desktop layouts.
+
+==================================================
+PROMPT 6 — ROUTING & APPLICATION LAYOUTS
+==================================================
+
+Implement these routes:
+
+/login
+/register
+/app
+/app/courses
+/app/courses/:courseId
+/app/lectures/:lectureId
+/app/notes
+/app/practice
+/app/tests
+/app/results
+/app/leaderboard
+
+/admin
+/admin/courses
+/admin/chapters
+/admin/topics
+/admin/lectures
+/admin/notes
+/admin/questions
+/admin/questions/new
+/admin/questions/import
+/admin/tests
+/admin/students
+
+Create separate StudentLayout and LecturerLayout components.
+
+Add not-found pages and route-level loading/error boundaries.
+
+Use temporary placeholders only for pages whose actual feature is not implemented yet. Label them clearly and do not represent them as completed functionality.
+
+==================================================
+PROMPT 7 — FIREBASE FOUNDATION
+==================================================
+
+Configure Firebase initialization using environment variables.
+
+Implement:
+- Firebase app initialization.
+- Authentication instance.
+- Firestore instance.
+- Storage instance.
+- Cloud Functions client.
+- Emulator configuration.
+- Environment validation.
+- Reusable Firebase service modules.
+
+Ensure the application shows a clear configuration error if required settings are missing.
+
+Never put privileged secrets in frontend variables.
+
+Document Firebase Console setup, local development and emulator commands.
+
+Do not create production resources or deploy.
+
+==================================================
+PROMPT 8 — AUTHENTICATION
+==================================================
+
+Implement real Firebase Authentication.
+
+Features:
+- Student registration.
+- Login.
+- Logout.
+- Auth state persistence.
+- Password reset.
+- Form validation.
+- Loading and error states.
+- User profile creation.
+- Protected routes.
+- Account-disabled handling.
+
+Public registration must assign only the student role.
+
+Never trust a role submitted by the browser.
+
+Write tests for registration, login, logout, invalid credentials, unauthenticated routes and session persistence.
+
+==================================================
+PROMPT 9 — ROLE-BASED AUTHORIZATION
+==================================================
+
+Implement secure Student, Lecturer and Admin authorization.
+
+Use server-controlled custom claims or an equivalent trusted role-assignment workflow.
+
+Implement:
+- Student route protection.
+- Lecturer route protection.
+- Admin-only operations.
+- Secure initial administrator provisioning.
+- Lecturer invitation or approval workflow.
+- Unauthorized-access pages.
+- Role-aware navigation.
+
+Create and test Firestore Security Rules.
+
+Test that:
+1. A student cannot grant themselves lecturer access.
+2. A lecturer cannot grant themselves admin access.
+3. A user cannot read another student's private data.
+4. Unauthenticated users cannot access protected data.
+
+Use Firebase Emulator Suite for security tests.
+
+Do not continue until these tests pass.
+
+==================================================
+PROMPT 10 — SECURITY BASELINE
+==================================================
+
+Create the first complete security baseline.
+
+Implement:
+- firestore.rules.
+- storage.rules.
+- firestore.indexes.json.
+- Emulator-based rules tests.
+- Input validation conventions.
+- Trusted Cloud Functions authorization helpers.
+- Secret management documentation.
+- Audit logging for sensitive administrative actions.
+
+Default-deny unspecified private collections.
+
+Separate published course content from private examination data.
+
+Do not assume Cloud Functions using the Admin SDK are restricted by Firestore Security Rules.
+
+Verify all sensitive operations perform server-side authorization and validation.
+
+==================================================
+PROMPT 11 — COURSE MANAGEMENT
+==================================================
+
+Implement lecturer-side course management.
+
+Features:
+- Create course.
+- Edit course.
+- Archive course.
+- Draft and publish states.
+- Course title, description, syllabus version and metadata.
+- Search and pagination.
+- Student course listing.
+- Course details page.
+
+Persist data in Firestore through a service layer.
+
+Implement loading, error, empty and confirmation states.
+
+Test authorized lecturer writes and unauthorized student writes.
+
+==================================================
+PROMPT 12 — CHAPTER & TOPIC MANAGEMENT
+==================================================
+
+Implement chapter and topic management.
+
+Features:
+- Create, edit and archive chapters.
+- Create, edit and archive topics.
+- Order chapters and topics.
+- Assign topics to chapters.
+- Validate references.
+- Display chapter/topic navigation.
+- Prevent accidental orphaned content.
+- Confirm destructive operations.
+
+Keep courseId, chapterId and topicId references consistent.
+
+Implement required indexes and query pagination.
+
+Test CRUD operations and permission boundaries.
+
+==================================================
+PROMPT 13 — LECTURE BUILDER
+==================================================
+
+Implement a lecturer-facing lecture editor.
+
+Fields:
+- Lecture title.
+- Chapter and topic.
+- Rich-text content.
+- Chemical equations and notation.
+- Images.
+- External video links.
+- Learning objectives.
+- Related notes.
+- Related questions.
+- Draft/published status.
+- Publication timestamps.
+- Content ordering.
+
+Support save draft, preview, publish, edit and archive.
+
+Use KaTeX or MathJax where appropriate.
+
+Validate links and sanitize rendered rich-text content.
+
+Do not store large image binaries in Firestore.
+
+Test lecture creation, editing, publishing and student read access.
+
+==================================================
+PROMPT 14 — NOTES & PDF LIBRARY
+==================================================
+
+Implement notes management.
+
+Support:
+- Topic-wise notes.
+- Shortcut notes.
+- Revision sheets.
+- PDF upload to Firebase Storage.
+- PDF metadata in Firestore.
+- Download permitted files.
+- Search and filters.
+- Draft and published states.
+- File replacement and deletion.
+- Upload progress and error handling.
+
+Validate file type and size.
+
+Protect unpublished and private files with Storage Security Rules.
+
+Never rely on an obscure download URL as authorization.
+
+Test upload, download, permission denial and failed upload recovery.
+
+==================================================
+PROMPT 15 — VIDEO & RESOURCE ARCHIVE
+==================================================
+
+Implement the educational resource library.
+
+Support:
+- Free video lecture links.
+- YouTube links.
+- Topic and chapter associations.
+- Resource title and description.
+- Source attribution.
+- Resource categories.
+- Search and filtering.
+- Lecturer-controlled publishing.
+- Broken-link handling where practical.
+
+Store resource metadata in Firestore.
+
+Validate external URLs and use safe link-opening behavior.
+
+Do not download or redistribute copyrighted video content without permission.
+
+==================================================
+PROMPT 16 — QUESTION BANK DATA MODEL
+==================================================
+
+Implement the question bank schema and validation layer before building the editor.
+
+Support:
+- MCQ and CQ types.
+- Chapter and topic references.
+- Difficulty and tags.
+- Question text and image references.
+- MCQ options and correct answer identifiers.
+- Explanations.
+- CQ stimulus and configurable subquestions.
+- Model answers.
+- Marks and marking rubrics.
+- Draft, published and archived states.
+- Created/updated timestamps and ownership.
+
+Use Zod schemas and reusable validation functions.
+
+Separate protected answer keys from student-readable question data.
+
+Write tests for valid and invalid MCQs and CQs.
+
+==================================================
+PROMPT 17 — MANUAL MCQ EDITOR
+==================================================
+
+Build the complete manual MCQ editor.
+
+Support:
+- Question text.
+- Configurable options.
+- Correct answer selection.
+- Single-correct default mode.
+- Optional multiple-correct mode.
+- Question and option images.
+- Answer and explanation.
+- Explanation images.
+- Chapter/topic.
+- Difficulty, tags and marks.
+- Negative marking.
+- Save draft, preview, edit and publish.
+
+Validate that the correct answer references an existing option.
+
+Prevent publication of incomplete questions.
+
+Preserve unsaved text during image upload failures.
+
+Test create, edit, duplicate, preview, validation and publishing flows.
+
+==================================================
+PROMPT 18 — MANUAL CQ EDITOR
+==================================================
+
+Build the complete CQ editor.
+
+Support:
+- Shared stimulus or passage.
+- Optional stimulus image.
+- Configurable subquestions.
+- Labels such as ক, খ, গ, ঘ.
+- Prompt and optional image per subquestion.
+- Marks per subquestion.
+- Model answers.
+- Explanations.
+- Optional answer/explanation images.
+- Criterion-based marking rubrics.
+- Reordering and validation.
+
+Calculate total marks from subquestion marks.
+
+Flag inconsistencies between total marks and subquestion marks.
+
+Allow the lecturer to save drafts, preview, edit, duplicate and publish.
+
+Write tests for all CQ validation and editing operations.
+
+==================================================
+PROMPT 19 — SECURE IMGBB UPLOAD SERVICE
+==================================================
+
+Implement question image hosting with ImgBB.
+
+Use a Firebase Cloud Function as the trusted upload endpoint.
+
+Requirements:
+- Authenticate the requester.
+- Verify lecturer/admin authorization.
+- Retrieve the ImgBB API key from Firebase Secret Manager.
+- Validate image MIME type, size and request payload.
+- Apply abuse controls and upload limits.
+- Upload the image to ImgBB.
+- Validate the upstream response.
+- Return the HTTPS image URL and available metadata.
+- Handle timeouts, errors and retry safely.
+- Preserve the question draft on failure.
+
+Create a reusable ImageUploadField component with preview, progress, retry, remove and replace actions.
+
+Support question, option, explanation, stimulus and subquestion images.
+
+Never put the ImgBB API key in frontend code.
+
+Document the limitations of externally hosted images and backup considerations.
+
+Test unauthorized uploads and simulated API failures.
+
+==================================================
+PROMPT 20 — JSON IMPORT & EXPORT
+==================================================
+
+Implement a complete JSON question importer.
+
+Support:
+- Upload .json file.
+- Paste JSON.
+- MCQ and CQ.
+- Answers and explanations.
+- Marks and rubrics.
+- Chapter/topic identifiers.
+- Image URLs and metadata.
+- Optional image attachments.
+- Schema versioning.
+- Syntax and field validation.
+- Question preview.
+- Duplicate detection.
+- Error reports.
+- Validated partial import.
+- Explicit all-or-nothing mode where feasible.
+- Controlled Firestore write batches.
+- Retry and import summary.
+- Export selected questions to JSON.
+
+Imported questions must default to draft status.
+
+For image attachments, allow the lecturer to select corresponding files or use a documented ZIP manifest format. Upload images through the trusted ImgBB endpoint and map returned URLs to the correct fields.
+
+Do not pretend JSON text alone can upload local image files.
+
+Create downloadable sample MCQ and CQ JSON files.
+
+Test malformed JSON, missing answers, invalid marks, duplicate imports, failed uploads and partial failures.
+
+==================================================
+PROMPT 21 — QUESTION BANK MANAGEMENT UI
+==================================================
+
+Implement the lecturer question bank interface.
+
+Features:
+- Search question text.
+- Filter by MCQ/CQ.
+- Filter by chapter, topic, difficulty and status.
+- Pagination.
+- Preview.
+- Edit.
+- Duplicate.
+- Archive.
+- Delete with confirmation.
+- Bulk selection.
+- Bulk status changes.
+- Question count summaries.
+
+Use responsive desktop tables and mobile cards.
+
+Prevent students from accessing unpublished questions or protected answer keys.
+
+Test search, filtering, pagination, permissions and destructive actions.
+
+==================================================
+PROMPT 22 — STUDENT PRACTICE SYSTEM
+==================================================
+
+Implement topic-wise and chapter-wise practice.
+
+Features:
+- Select chapter and topic.
+- Choose MCQ or CQ.
+- Practice sets.
+- Question navigation.
+- Optional immediate feedback.
+- Explanation visibility according to release rules.
+- Mark questions for revision.
+- Record attempts and progress.
+- Review mistakes.
+- Retry incorrect questions.
+
+Never expose protected answer keys unnecessarily.
+
+Use appropriate server-side validation for submitted answers.
+
+Test practice completion, answer feedback, progress persistence and unauthorized data access.
+
+==================================================
+PROMPT 23 — MODEL TEST BUILDER
+==================================================
+
+Implement lecturer-side model test creation.
+
+Support:
+- Test title and description.
+- Selected questions or question-bank filters.
+- MCQ/CQ composition.
+- Marks and duration.
+- Question ordering.
+- Randomization where configured.
+- Negative marking.
+- Start and end time.
+- Attempt limits.
+- Draft, scheduled and published states.
+- Answer release policy.
+
+Validate total marks and test configuration.
+
+Create a stable test configuration and preserve relevant exam snapshots so later question edits do not unexpectedly change historical attempts.
+
+Do not expose answer keys in student-readable test documents.
+
+Test scheduling, configuration validation and permissions.
+
+==================================================
+PROMPT 24 — EXAM ENGINE & GRADING
+==================================================
+
+Implement the student examination experience.
+
+Features:
+- Test instructions.
+- Countdown timer.
+- Question navigation.
+- Answer persistence.
+- Network-error recovery.
+- Submission confirmation.
+- Automatic submission on timeout.
+- Server-validated final submission.
+- Idempotent submission handling.
+- Server-side MCQ grading.
+- CQ written answers.
+- Manual CQ evaluation workflow.
+- Result history.
+
+Never trust a score sent by the browser.
+
+Validate attempt ownership, test window, attempt state, question IDs and answer format on the server.
+
+Handle repeated requests and concurrent submissions safely.
+
+Keep answer keys protected until the configured release time.
+
+Write automated tests for timeout, duplicate submission, invalid answers, score tampering and grading correctness.
+
+==================================================
+PROMPT 25 — RESULTS, PROGRESS & LEADERBOARD
+==================================================
+
+Implement:
+- Student result dashboard.
+- Test history.
+- Score and accuracy analytics.
+- Chapter/topic performance.
+- Incorrect-answer review.
+- Lecture completion tracking.
+- Revision progress.
+- Leaderboard summaries.
+- Ranking and tie-breaking rules.
+- CQ evaluation status.
+
+Generate authoritative exam scores on the backend.
+
+Use server-side aggregation for leaderboard summaries where appropriate.
+
+Avoid exposing private student details in public rankings.
+
+Define how ties, pending CQ marks, disqualified attempts and score corrections are handled.
+
+Test ranking calculations, privacy and score consistency.
+
+==================================================
+PROMPT 26 — STUDENT & LECTURER DASHBOARDS
+==================================================
+
+Complete both dashboards using real application data.
+
+Student dashboard:
+- Continue learning.
+- Recent lectures.
+- Notes and bookmarks.
+- Pending and upcoming tests.
+- Recent results.
+- Course progress.
+- Revision suggestions.
+- Leaderboard position.
+
+Lecturer dashboard:
+- Course and lecture summaries.
+- Recent questions.
+- Question-bank counts.
+- Draft and published content.
+- Upcoming tests.
+- Student performance.
+- CQ evaluation queue.
+- Upload and publishing activity.
+
+Avoid unnecessary reads and duplicate requests.
+
+Use pagination, loading states and clear empty states.
+
+Remove placeholder data from production paths.
+
+Test both dashboard roles and responsive layouts.
+
+==================================================
+PROMPT 27 — PWA & MOBILE EXPERIENCE
+==================================================
+
+Prepare the application as an installable PWA where supported.
+
+Implement:
+- Web app manifest.
+- Application icons.
+- Theme colors.
+- Installability checks.
+- Appropriate caching strategy.
+- Offline fallback page.
+- Safe caching of public content only.
+- Responsive navigation.
+- Mobile form and table usability.
+
+Do not cache private answer keys or sensitive student data in a public cache.
+
+Document offline limitations, notification support and installation steps.
+
+Test installation and mobile navigation in supported browsers.
+
+==================================================
+PROMPT 28 — FULL QA & SECURITY AUDIT
+==================================================
+
+Run a complete quality review.
+
+Test:
+- Registration and authentication.
+- Role permissions.
+- Firestore and Storage rules.
+- Lecture publishing.
+- PDF downloads.
+- Manual MCQ/CQ creation.
+- JSON import/export.
+- ImgBB upload failures.
+- Practice and explanations.
+- Exam submission and grading.
+- CQ evaluation.
+- Leaderboard calculations.
+- Responsive UI.
+- Accessibility.
+- Error states and network failures.
+
+Run unit, integration, security and end-to-end tests.
+
+Fix reproducible bugs and regressions.
+
+Check dependency vulnerabilities and build warnings.
+
+Do not claim that the application is secure or production-ready without evidence.
+
+Create docs/QA_REPORT.md with actual results and unresolved issues.
+
+==================================================
+PROMPT 29 — DEPLOYMENT PREPARATION
+==================================================
+
+Prepare production deployment but do not deploy yet.
+
+Verify:
+- Production Firebase project configuration.
+- Environment variables and secrets.
+- Firestore rules.
+- Storage rules.
+- Cloud Functions permissions.
+- Required Firestore indexes.
+- Authentication provider settings.
+- Authorized domains.
+- Error monitoring.
+- Backup and recovery procedures.
+- Cost monitoring and usage limits.
+- Build output.
+- Hosting configuration.
+- Deployment rollback plan.
+
+Create docs/DEPLOYMENT.md and a production readiness checklist.
+
+List every command that would change production resources.
+
+Stop and request explicit approval before deployment.
+
+==================================================
+PROMPT 30 — APPROVED RELEASE & HANDOVER
+==================================================
+
+Only proceed if explicit deployment approval has been provided.
+
+Deploy the approved build to the intended Firebase project.
+
+Verify:
+- The deployed URL loads.
+- Login and role permissions work.
+- Course content loads.
+- Notes and permitted downloads work.
+- Question creation and image uploads work.
+- JSON imports work.
+- Practice and model tests work.
+- Results and leaderboard are correct.
+- No critical console or function errors occur.
+
+If a critical issue appears, stop the release or execute the approved rollback procedure.
+
+Prepare a final handover report containing:
+1. Implemented features.
+2. Deployment URL.
+3. Required environment variables, without secret values.
+4. Firebase resources created.
+5. Security and test results.
+6. Known limitations.
+7. Maintenance instructions.
+8. Backup and recovery procedures.
+9. Remaining work.
+
+Never claim successful deployment or testing without actual verification.

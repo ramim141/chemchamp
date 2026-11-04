@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    /* Prevent horizontal layout shifts / jumps between pages on Windows & desktop */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Hind Siliguri', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #020617;
+    color: #f8fafc;
+    /* overflow-x: clip ensures horizontal safety without breaking position: sticky */
+    overflow-x: clip;
+  }
+}
+
+/* Custom smooth dark scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Buttery-Smooth Tab Transition Animation */
+@keyframes tabFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tab-switch {
+  animation: tabFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth motion utility classes */
+.smooth-press {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smooth-press:active {
+  transform: scale(0.96);
+}
+
+.smooth-card {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.smooth-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Global mobile tap & tactile feedback */
+button:not(:disabled), [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Shimmer pulse animation */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.animate-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+  content: '';
+}
+
+/* ===== ChemChamp Markdown + KaTeX typography ===== */
+.cc-markdown {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.cc-inline-math {
+  display: inline;
+  padding: 0 0.15em;
+}
+.cc-inline-math .katex {
+  font-size: 1.06em;
+  white-space: normal;
+}
+.cc-markdown .katex-display {
+  margin: 0;
+  max-width: 100%;
+}
+.cc-markdown .katex-display > .katex {
+  font-size: 1.15em;
+}
+/* বাংলা অক্ষর KaTeX \text{} এর ভেতরে সুন্দর দেখাতে ও কার্নিং বজায় রাখতে */
+.katex .mord.text,
+.katex .text {
+  font-family: 'Hind Siliguri', 'Outfit', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* ===== Study Read Mode (Zen Focus View) ===== */
+body.study-read-mode .bottom-nav-container,
+body.study-read-mode .desktop-navbar-container,
+body.study-read-mode .floating-doubt-container {
+  display: none !important;
+}
+
+body.study-read-mode {
+  overflow-x: hidden;
+}
+
+/* Mobile App Native Feel & Touch Ergonomics */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent rubberband bounce effect on pull */
+  html, body {
+    overscroll-behavior-y: none;
+  }
+}
