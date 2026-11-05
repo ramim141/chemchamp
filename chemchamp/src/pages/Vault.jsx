@@ -120,14 +120,14 @@ export default function Vault() {
 
         {/* Tabs (Responsive 3-Button Segmented Control) */}
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="grid grid-cols-3 sm:flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl text-xs font-bold flex-1 sm:flex-initial">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1 p-1 bg-slate-900/90 border border-slate-800/90 rounded-2xl text-xs font-bold flex-1 sm:flex-initial shadow-sm">
             <button
               type="button"
               onClick={() => handleTabChange("reactions")}
-              className={`px-3 py-2 sm:py-1.5 rounded-lg transition-all text-center truncate ${
+              className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl transition-all text-center truncate active:scale-95 ${
                 activeTab === "reactions"
-                  ? "bg-amber-500 text-slate-950 shadow-md font-black"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20 font-black"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/50"
               }`}
             >
               ফ্লিপকার্ড ({flashcards.length})
@@ -135,10 +135,10 @@ export default function Vault() {
             <button
               type="button"
               onClick={() => handleTabChange("periodic")}
-              className={`px-3 py-2 sm:py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 truncate ${
+              className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl transition-all flex items-center justify-center gap-1 truncate active:scale-95 ${
                 activeTab === "periodic"
-                  ? "bg-teal-500 text-slate-950 shadow-md font-black"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20 font-black"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/50"
               }`}
             >
               <Atom className="w-3.5 h-3.5 shrink-0 hidden xs:inline" />
@@ -147,10 +147,10 @@ export default function Vault() {
             <button
               type="button"
               onClick={() => handleTabChange("formulas")}
-              className={`px-3 py-2 sm:py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 truncate ${
+              className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl transition-all flex items-center justify-center gap-1 truncate active:scale-95 ${
                 activeTab === "formulas"
-                  ? "bg-emerald-500 text-slate-950 shadow-md font-black"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 font-black"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/50"
               }`}
             >
               <FileSpreadsheet className="w-3.5 h-3.5 shrink-0 hidden xs:inline" />

@@ -357,22 +357,23 @@ export default function Profile() {
         </div>
       </header>
 
-      {/* 2. Top Navigation Tabs */}
-      <div className="bg-slate-900/90 border border-slate-800/90 p-1.5 rounded-2xl flex flex-wrap items-center gap-1.5 mb-6 shadow-sm overflow-x-auto">
+      {/* 2. Top Navigation Tabs - Native App Horizontal Scrolling Bar */}
+      <div className="bg-slate-900/90 border border-slate-800/90 p-1 sm:p-1.5 rounded-2xl flex items-center gap-1.5 mb-6 shadow-sm overflow-x-auto scrollbar-none sm:grid sm:grid-cols-5">
         <button
           type="button"
           onClick={() => {
             soundService.playClick();
             setActiveTab("overview");
           }}
-          className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+          className={`flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 sm:shrink active:scale-95 ${
             activeTab === "overview"
-              ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
+              ? "bg-gradient-to-r from-emerald-500/25 to-teal-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/10 font-black"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
           }`}
         >
-          <User className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>প্রোফাইল ও লক্ষ্য</span>
+          <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
+          <span className="sm:hidden">প্রোফাইল</span>
+          <span className="hidden sm:inline">প্রোফাইল ও লক্ষ্য</span>
         </button>
 
         <button
@@ -381,14 +382,15 @@ export default function Profile() {
             soundService.playClick();
             setActiveTab("achievements");
           }}
-          className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+          className={`flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 sm:shrink active:scale-95 ${
             activeTab === "achievements"
-              ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/40 shadow-sm"
+              ? "bg-gradient-to-r from-purple-500/25 to-pink-500/20 text-purple-300 border border-purple-500/40 shadow-sm shadow-purple-500/10 font-black"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
           }`}
         >
-          <Award className="w-4 h-4 text-purple-400 shrink-0" />
-          <span>আরপিজি ও ব্যাজ</span>
+          <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400 shrink-0" />
+          <span className="sm:hidden">ব্যাজ</span>
+          <span className="hidden sm:inline">আরপিজি ও ব্যাজ</span>
         </button>
 
         <button
@@ -397,13 +399,13 @@ export default function Profile() {
             soundService.playClick();
             setActiveTab("analytics");
           }}
-          className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+          className={`flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 sm:shrink active:scale-95 ${
             activeTab === "analytics"
-              ? "bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 shadow-sm"
+              ? "bg-gradient-to-r from-teal-500/25 to-cyan-500/20 text-teal-300 border border-teal-500/40 shadow-sm shadow-teal-500/10 font-black"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
           }`}
         >
-          <TrendingUp className="w-4 h-4 text-teal-400 shrink-0" />
+          <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-400 shrink-0" />
           <span>পারফর্ম্যান্স</span>
         </button>
 
@@ -413,14 +415,15 @@ export default function Profile() {
             soundService.playClick();
             setActiveTab("doubts");
           }}
-          className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+          className={`flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 sm:shrink active:scale-95 ${
             activeTab === "doubts"
-              ? "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border border-amber-500/40 shadow-sm"
+              ? "bg-gradient-to-r from-amber-500/25 to-orange-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/10 font-black"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
           }`}
         >
-          <MessageSquare className="w-4 h-4 text-amber-400 shrink-0" />
-          <span>ডাউট বক্স ({myDoubts.length})</span>
+          <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+          <span className="sm:hidden">ডাউট ({myDoubts.length})</span>
+          <span className="hidden sm:inline">ডাউট বক্স ({myDoubts.length})</span>
         </button>
 
         <button
@@ -429,13 +432,13 @@ export default function Profile() {
             soundService.playClick();
             setActiveTab("settings");
           }}
-          className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+          className={`flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 sm:shrink active:scale-95 ${
             activeTab === "settings"
-              ? "bg-gradient-to-r from-slate-700/50 to-slate-800/50 text-white border border-slate-700 shadow-sm"
+              ? "bg-gradient-to-r from-slate-700/50 to-slate-800/50 text-white border border-slate-600 shadow-sm font-black"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
           }`}
         >
-          <Settings className="w-4 h-4 text-slate-300 shrink-0" />
+          <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300 shrink-0" />
           <span>সেটিংস</span>
         </button>
       </div>

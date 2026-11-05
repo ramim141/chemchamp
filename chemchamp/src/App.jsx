@@ -80,32 +80,36 @@ const AppLayout = () => {
   const isMainTab = STUDENT_MAIN_TABS.some((tab) => tab.path === currentPath);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-emerald-500/30 selection:text-emerald-200">
-      <DesktopNavbar />
-      <main className="flex-1 flex flex-col">
-        {STUDENT_MAIN_TABS.map(({ path, Component }) => {
-          if (!visitedTabs.has(path)) return null;
-          const isActive = currentPath === path;
-          return (
-            <div
-              key={path}
-              className={`w-full flex-1 flex flex-col ${isActive ? "animate-tab-switch" : ""}`}
-              style={{ display: isActive ? "flex" : "none" }}
-            >
-              <Component />
-            </div>
-          );
-        })}
+    <div className="relative min-h-screen bg-slate-950 flex flex-col selection:bg-emerald-500/30 selection:text-emerald-200">
+      {/* Premium Ambient Atmospheric Glow Background */}
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(16,185,129,0.08),transparent_70%),radial-gradient(ellipse_60%_50%_at_100%_100%,rgba(99,102,241,0.05),transparent_60%)] z-0" />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <DesktopNavbar />
+        <main className="flex-1 flex flex-col">
+          {STUDENT_MAIN_TABS.map(({ path, Component }) => {
+            if (!visitedTabs.has(path)) return null;
+            const isActive = currentPath === path;
+            return (
+              <div
+                key={path}
+                className={`w-full flex-1 flex flex-col ${isActive ? "animate-tab-switch" : ""}`}
+                style={{ display: isActive ? "flex" : "none" }}
+              >
+                <Component />
+              </div>
+            );
+          })}
 
-        {/* If route is an auxiliary page under AppLayout, render via Outlet */}
-        {!isMainTab && (
-          <div className="w-full flex-1 flex flex-col animate-tab-switch">
-            <Outlet />
-          </div>
-        )}
-      </main>
-      <FloatingDoubtButton />
-      <BottomNav />
+          {/* If route is an auxiliary page under AppLayout, render via Outlet */}
+          {!isMainTab && (
+            <div className="w-full flex-1 flex flex-col animate-tab-switch">
+              <Outlet />
+            </div>
+          )}
+        </main>
+        <FloatingDoubtButton />
+        <BottomNav />
+      </div>
     </div>
   );
 };

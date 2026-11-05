@@ -101,16 +101,20 @@ export default function DesktopNavbar() {
   return (
     <>
       {/* 1. Mobile Compact Sticky Top Bar */}
-      <header className="desktop-navbar-container md:hidden sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80">
+      <header className="desktop-navbar-container md:hidden sticky top-0 z-40 bg-slate-950/85 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.6)]">
         <div className="px-2.5 sm:px-3.5 h-13 sm:h-14 flex items-center justify-between gap-1 sm:gap-2">
           {/* Logo */}
-          <Link to="/dashboard" className="flex items-center gap-1.5 shrink-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-slate-950 text-xs sm:text-sm shadow-md shadow-emerald-500/20">
+          <Link
+            to="/dashboard"
+            onClick={() => soundService.playClick()}
+            className="flex items-center gap-1.5 shrink-0 active:scale-95 transition-transform"
+          >
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-slate-950 text-xs sm:text-sm shadow-md shadow-emerald-500/30 ring-1 ring-emerald-400/40">
               🧪
             </div>
             <div className="flex items-center gap-1">
               <span className="text-xs sm:text-sm font-black text-white tracking-tight">ChemChamp</span>
-              <span className="text-[8.5px] sm:text-[9px] font-extrabold uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1 py-0.2 rounded">
+              <span className="text-[8.5px] sm:text-[9px] font-extrabold uppercase text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-1 py-0.2 rounded shadow-[0_0_8px_rgba(52,211,153,0.3)]">
                 PRO
               </span>
             </div>
@@ -121,10 +125,10 @@ export default function DesktopNavbar() {
             <button
               type="button"
               onClick={handleToggleSound}
-              className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-colors ${
+              className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-all active:scale-90 ${
                 soundEnabled
-                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                  : "bg-slate-900 border-slate-800 text-slate-500"
+                  ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.2)]"
+                  : "bg-slate-900/90 border-slate-800 text-slate-500 hover:text-slate-300"
               }`}
               title={soundEnabled ? "শব্দ বন্ধ করুন" : "শব্দ চালু করুন"}
             >
@@ -137,7 +141,7 @@ export default function DesktopNavbar() {
                 soundService.playClick();
                 setShowSearch(true);
               }}
-              className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-emerald-400"
+              className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-emerald-400 hover:border-emerald-500/30 transition-all active:scale-90"
               title="সার্চ করুন"
             >
               <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -146,21 +150,22 @@ export default function DesktopNavbar() {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400"
+                className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-amber-500/15 border border-amber-500/35 text-amber-400 active:scale-90 transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)]"
                 title="অ্যাডমিন স্টুডিও"
               >
                 <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Link>
             )}
 
-            <div className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1 rounded-lg sm:rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[11px] sm:text-xs font-bold font-mono">
+            <div className="flex items-center gap-1 px-1.5 sm:px-2.5 py-1 rounded-lg sm:rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold font-mono shadow-[0_0_10px_rgba(245,158,11,0.15)]">
               <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 fill-amber-400 animate-pulse" />
               <span>{streak}</span>
             </div>
 
             <Link
               to="/profile"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0"
+              onClick={() => soundService.playClick()}
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0 active:scale-90 transition-all ring-1 ring-white/10"
             >
               {user?.photoURL ? (
                 <img

@@ -346,10 +346,10 @@ export default function ExamRunnerModal({ examData, onClose, onFinish }) {
                           <div
                             key={optIdx}
                             onClick={() => handleSelectOption(optIdx, currentIndex)}
-                            className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-center justify-between transition-all ${
+                            className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-center justify-between transition-all active:scale-[0.98] ${
                               isSelected
                                 ? "bg-emerald-500/15 border-emerald-500 text-emerald-300 font-bold"
-                                : "bg-slate-950/60 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                                : "bg-slate-950/60 border-slate-800/80 text-slate-300 hover:border-slate-700 hover:bg-slate-900/60"
                             }`}
                           >
                             <div className="flex items-center gap-2">
@@ -489,9 +489,9 @@ export default function ExamRunnerModal({ examData, onClose, onFinish }) {
                       key={optIdx}
                       type="button"
                       onClick={() => handleSelectOption(optIdx)}
-                      className={`w-full p-3 rounded-lg border text-left text-xs transition-all flex items-center justify-between group ${
+                      className={`w-full p-3 rounded-xl border text-left text-xs transition-all flex items-center justify-between group active:scale-[0.98] ${
                         isSelected
-                          ? "bg-emerald-500/20 border-emerald-500 text-emerald-300 font-semibold shadow-sm"
+                          ? "bg-emerald-500/20 border-emerald-500 text-emerald-300 font-semibold shadow-sm shadow-emerald-500/10"
                           : "bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800/60"
                       }`}
                     >

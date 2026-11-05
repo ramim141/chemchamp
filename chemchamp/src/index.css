@@ -54,11 +54,11 @@
 }
 
 /* Smooth motion utility classes */
-.smooth-press {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+.smooth-press, .tap-bounce {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.smooth-press:active {
-  transform: scale(0.96);
+.smooth-press:active, .tap-bounce:active {
+  transform: scale(0.95);
 }
 
 .smooth-card {
@@ -66,6 +66,33 @@
 }
 .smooth-card:hover {
   transform: translateY(-2px);
+}
+.smooth-card:active {
+  transform: scale(0.98);
+}
+
+/* Atmospheric Ambient Glows & Glassmorphism Grading */
+.glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+}
+.glow-amber {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+}
+.glow-teal {
+  box-shadow: 0 0 25px -5px rgba(20, 184, 166, 0.25);
+}
+.glow-rose {
+  box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.25);
+}
+.glass-panel {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 /* Global mobile tap & tactile feedback */

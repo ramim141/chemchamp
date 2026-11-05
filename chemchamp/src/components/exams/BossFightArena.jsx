@@ -83,7 +83,7 @@ export default function BossFightArena({
                 key={boss.id}
                 type="button"
                 onClick={() => onSelectBoss && onSelectBoss(boss)}
-                className={`p-2.5 rounded-xl border text-left transition-all relative flex flex-col justify-between ${
+                className={`p-2.5 rounded-xl border text-left transition-all relative flex flex-col justify-between active:scale-95 ${
                   isSelected
                     ? "bg-amber-500/15 border-amber-500 text-white shadow-md shadow-amber-500/10"
                     : "bg-slate-900/90 border-slate-800 hover:border-slate-700 text-slate-300"

@@ -843,6 +843,21 @@ export default function StudyHub() {
         </div>
       </div>
 
+      {/* মোবাইল ফ্লোটিং কুইক সিলেবাস বাটন (সহজে ড্রয়ার খোলার জন্য) */}
+      {!isReadMode && selectedChapter && (
+        <button
+          type="button"
+          onClick={() => {
+            soundService.playClick();
+            setMobileSidebarOpen(true);
+          }}
+          className="fixed bottom-18 left-3 z-30 lg:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-950/90 hover:bg-slate-900 text-teal-300 border border-teal-500/40 shadow-2xl shadow-slate-950/90 active:scale-95 transition-all text-xs font-bold backdrop-blur-xl"
+        >
+          <Menu className="w-3.5 h-3.5 text-teal-400" />
+          <span>টপিক তালিকা</span>
+        </button>
+      )}
+
       {/* ৩. মোবাইল স্লাইড-ওভার সাইডবার ড্রয়ার */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">

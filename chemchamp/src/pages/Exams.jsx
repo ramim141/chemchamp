@@ -641,7 +641,7 @@ export default function Exams() {
           <button
             type="button"
             onClick={() => handleTabChange("tests")}
-            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink ${
+            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink active:scale-95 ${
               activeTab === "tests"
                 ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm font-black"
                 : "text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent"
@@ -658,7 +658,7 @@ export default function Exams() {
           <button
             type="button"
             onClick={() => handleTabChange("cq")}
-            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink ${
+            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink active:scale-95 ${
               activeTab === "cq"
                 ? "bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 shadow-sm font-black"
                 : "text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent"
@@ -675,7 +675,7 @@ export default function Exams() {
           <button
             type="button"
             onClick={() => handleTabChange("boss")}
-            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink ${
+            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink active:scale-95 ${
               activeTab === "boss"
                 ? "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 shadow-sm font-black"
                 : "text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent"
@@ -692,7 +692,7 @@ export default function Exams() {
           <button
             type="button"
             onClick={() => handleTabChange("mistakes")}
-            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink ${
+            className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[38px] text-xs font-bold shrink-0 md:shrink active:scale-95 ${
               activeTab === "mistakes"
                 ? "bg-gradient-to-r from-rose-500/20 to-red-500/20 text-rose-300 border border-rose-500/40 shadow-sm font-black"
                 : "text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent"

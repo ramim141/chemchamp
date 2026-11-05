@@ -407,9 +407,9 @@ export default function Leaderboard() {
         <button
           type="button"
           onClick={() => setActiveTab("individual")}
-          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap ${
+          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap active:scale-95 ${
             activeTab === "individual"
-              ? "bg-amber-500 text-slate-950 shadow-md font-black"
+              ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20 font-black"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -421,9 +421,9 @@ export default function Leaderboard() {
         <button
           type="button"
           onClick={() => setActiveTab("college")}
-          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap ${
+          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap active:scale-95 ${
             activeTab === "college"
-              ? "bg-teal-500 text-slate-950 shadow-md font-black"
+              ? "bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20 font-black"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -434,9 +434,9 @@ export default function Leaderboard() {
         <button
           type="button"
           onClick={() => setActiveTab("streak")}
-          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap ${
+          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap active:scale-95 ${
             activeTab === "streak"
-              ? "bg-rose-500 text-white shadow-md font-black"
+              ? "bg-rose-500 text-white shadow-md shadow-rose-500/20 font-black"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -448,9 +448,9 @@ export default function Leaderboard() {
         <button
           type="button"
           onClick={() => setActiveTab("duel")}
-          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap ${
+          className={`py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0 sm:shrink flex-1 sm:flex-initial whitespace-nowrap active:scale-95 ${
             activeTab === "duel"
-              ? "bg-indigo-500 text-white shadow-md font-black"
+              ? "bg-indigo-500 text-white shadow-md shadow-indigo-500/20 font-black"
               : "text-slate-400 hover:text-white"
           }`}
         >

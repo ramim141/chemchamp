@@ -364,22 +364,23 @@ export default function Dashboard() {
 
           {/* Section D: Smart Modular Learning Center (Segmented Tab Controller - Clutter Elimination) */}
           <div className="space-y-4 pt-2">
-            {/* Segmented Tab Navigation Bar - Perfectly Balanced 3-Column Grid, Zero Wrapping */}
-            <div className="bg-slate-900/90 border border-slate-800/90 p-1.5 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-1.5 shadow-sm">
+            {/* Segmented Tab Navigation Bar - Modern Native App Segmented Control, 1-Row Responsive Grid */}
+            <div className="bg-slate-900/90 border border-slate-800/90 p-1 sm:p-1.5 rounded-2xl grid grid-cols-3 gap-1 shadow-sm">
               <button
                 type="button"
                 onClick={() => {
                   soundService.playClick();
                   setActiveHubTab("vault");
                 }}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[44px] ${
+                className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[40px] sm:min-h-[44px] active:scale-95 ${
                   activeHubTab === "vault"
-                    ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
+                    ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/10 font-black"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
                 }`}
               >
-                <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="whitespace-nowrap">ভল্ট ও টুলস</span>
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
+                <span className="sm:hidden truncate">ভল্ট ও টুলস</span>
+                <span className="hidden sm:inline whitespace-nowrap">ভল্ট ও টুলস</span>
                 <span className="hidden md:inline-block px-1.5 py-0.5 rounded-md text-[10px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-mono shrink-0 whitespace-nowrap">
                   ৪টি টুল
                 </span>
@@ -391,14 +392,15 @@ export default function Dashboard() {
                   soundService.playClick();
                   setActiveHubTab("heatmap");
                 }}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[44px] ${
+                className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[40px] sm:min-h-[44px] active:scale-95 ${
                   activeHubTab === "heatmap"
-                    ? "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border border-amber-500/40 shadow-sm"
+                    ? "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/10 font-black"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
                 }`}
               >
-                <Activity className="w-4 h-4 text-amber-400 shrink-0" />
-                <span className="whitespace-nowrap">উইকনেস অ্যানালাইসিস</span>
+                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+                <span className="sm:hidden truncate">উইকনেস</span>
+                <span className="hidden sm:inline whitespace-nowrap">উইকনেস অ্যানালাইসিস</span>
                 <span className="hidden md:inline-block px-1.5 py-0.5 rounded-md text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/20 font-mono shrink-0 whitespace-nowrap">
                   হিটম্যাপ
                 </span>
@@ -410,14 +412,15 @@ export default function Dashboard() {
                   soundService.playClick();
                   setActiveHubTab("admission");
                 }}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[44px] ${
+                className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all whitespace-nowrap min-h-[40px] sm:min-h-[44px] active:scale-95 ${
                   activeHubTab === "admission"
-                    ? "bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 shadow-sm"
+                    ? "bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 shadow-sm shadow-teal-500/10 font-black"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent"
                 }`}
               >
-                <Target className="w-4 h-4 text-teal-400 shrink-0" />
-                <span className="whitespace-nowrap">অ্যাডমিশন স্পেশাল এজ</span>
+                <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-400 shrink-0" />
+                <span className="sm:hidden truncate">অ্যাডমিশন</span>
+                <span className="hidden sm:inline whitespace-nowrap">অ্যাডমিশন স্পেশাল এজ</span>
                 <span className="hidden md:inline-block px-1.5 py-0.5 rounded-md text-[10px] bg-teal-500/10 text-teal-300 border border-teal-500/20 font-mono shrink-0 whitespace-nowrap">
                   ২০ বছর
                 </span>
