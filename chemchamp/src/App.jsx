@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute, AdminRoute } from "./components/common/ProtectedRoute";
@@ -6,35 +6,48 @@ import BottomNav from "./components/common/BottomNav";
 import DesktopNavbar from "./components/common/DesktopNavbar";
 import FloatingDoubtButton from "./components/common/FloatingDoubtButton";
 import ScrollToTop from "./components/common/ScrollToTop";
-import PageTransition from "./components/common/PageTransition";
 
-// মূল পেইজসমূহ
+// সরাসরি লোড (Critical Path for Landing & Core Study)
 import Landing from "./pages/Landing";
-import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import StudyHub from "./pages/StudyHub";
-import Exams from "./pages/Exams";
-import Vault from "./pages/Vault";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login";
-import Leaderboard from "./pages/Leaderboard";
 
-// অ্যাডমিন লেআউট ও মডিউলসমূহ
-import AdminLayout from "./layouts/AdminLayout";
-import AdminOverview from "./components/admin/AdminOverview";
-import JsonBatchUploader from "./components/admin/JsonBatchUploader";
-import ImgBBUploader from "./components/admin/ImgBBUploader";
-import CurriculumManager from "./components/admin/CurriculumManager";
-import AdminMockExamManager from "./components/admin/AdminMockExamManager";
-import AdminDoubtDesk from "./components/admin/AdminDoubtDesk";
-import AdminVaultStudio from "./components/admin/AdminVaultStudio";
-import AdminAdmissionEdgeManager from "./components/admin/AdminAdmissionEdgeManager";
-import AdminLandingManager from "./components/admin/AdminLandingManager";
-import AdminUserManager from "./components/admin/AdminUserManager";
-import AdminAnnouncementManager from "./components/admin/AdminAnnouncementManager";
-import AdminExamResultsManager from "./components/admin/AdminExamResultsManager";
+// লেজি-লোড: পাবলিক ও অথ পেজসমূহ
+const Login = lazy(() => import("./pages/Login"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
+const PublicChemistryIndex = lazy(() => import("./pages/PublicChemistryIndex"));
+const PublicChapterDetail = lazy(() => import("./pages/PublicChapterDetail"));
 
-// প্রটেক্টেড স্টুডেন্ট প্রধান ট্যাব কনফিগ (Keep-Alive Memory)
+// লেজি-লোড: সেকেন্ডারি স্টুডেন্ট পেজসমূহ (ভারী বান্ডেল আলাদা চাঙ্কে)
+const Exams = lazy(() => import("./pages/Exams"));
+const Vault = lazy(() => import("./pages/Vault"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const Profile = lazy(() => import("./pages/Profile"));
+
+// লেজি-লোড: অ্যাডমিন লেআউট ও মডিউলসমূহ (সাধারণ ব্যবহারকারীদের থেকে সম্পূর্ণ আলাদা চাঙ্কে)
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const AdminOverview = lazy(() => import("./components/admin/AdminOverview"));
+const JsonBatchUploader = lazy(() => import("./components/admin/JsonBatchUploader"));
+const ImgBBUploader = lazy(() => import("./components/admin/ImgBBUploader"));
+const CurriculumManager = lazy(() => import("./components/admin/CurriculumManager"));
+const AdminMockExamManager = lazy(() => import("./components/admin/AdminMockExamManager"));
+const AdminDoubtDesk = lazy(() => import("./components/admin/AdminDoubtDesk"));
+const AdminVaultStudio = lazy(() => import("./components/admin/AdminVaultStudio"));
+const AdminAdmissionEdgeManager = lazy(() => import("./components/admin/AdminAdmissionEdgeManager"));
+const AdminLandingManager = lazy(() => import("./components/admin/AdminLandingManager"));
+const AdminUserManager = lazy(() => import("./components/admin/AdminUserManager"));
+const AdminAnnouncementManager = lazy(() => import("./components/admin/AdminAnnouncementManager"));
+const AdminExamResultsManager = lazy(() => import("./components/admin/AdminExamResultsManager"));
+
+// স্মুথ লোডিং ইন্ডিকেটর
+const RouteLoader = () => (
+  <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3 p-6">
+    <div className="w-9 h-9 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+    <span className="text-xs text-slate-400 font-medium">লোড হচ্ছে...</span>
+  </div>
+);
+
+// প্রোটেক্টেড স্টুডেন্ট প্রধান ট্যাব কনফিগ (Keep-Alive Memory)
 const STUDENT_MAIN_TABS = [
   { path: "/dashboard", Component: Dashboard },
   { path: "/study", Component: StudyHub },
@@ -95,7 +108,9 @@ const AppLayout = () => {
                 className={`w-full flex-1 flex flex-col ${isActive ? "animate-tab-switch" : ""}`}
                 style={{ display: isActive ? "flex" : "none" }}
               >
-                <Component />
+                <Suspense fallback={<RouteLoader />}>
+                  <Component />
+                </Suspense>
               </div>
             );
           })}
@@ -103,7 +118,9 @@ const AppLayout = () => {
           {/* If route is an auxiliary page under AppLayout, render via Outlet */}
           {!isMainTab && (
             <div className="w-full flex-1 flex flex-col animate-tab-switch">
-              <Outlet />
+              <Suspense fallback={<RouteLoader />}>
+                <Outlet />
+              </Suspense>
             </div>
           )}
         </main>
@@ -121,46 +138,50 @@ export default function App() {
         {/* Route smooth auto scroll-to-top */}
         <ScrollToTop />
 
-        <Routes>
-          {/* পাবলিক রুট */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/onboarding" element={<Onboarding />} />
+        <Suspense fallback={<RouteLoader />}>
+          <Routes>
+            {/* পাবলিক রুট */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/chemistry" element={<PublicChemistryIndex />} />
+            <Route path="/chemistry/:chapterSlug" element={<PublicChapterDetail />} />
 
-          {/* প্রটেক্টেড স্টুডেন্ট শেল (Keep-Alive Zero-Reload Persistence) */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<></>} />
-              <Route path="/study" element={<></>} />
-              <Route path="/exams" element={<></>} />
-              <Route path="/vault" element={<></>} />
-              <Route path="/profile" element={<></>} />
-              <Route path="/leaderboard" element={<></>} />
+            {/* প্রোটেক্টেড স্টুডেন্ট শেল (Keep-Alive Zero-Reload Persistence) */}
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppLayout />}>
+                <Route path="/dashboard" element={<></>} />
+                <Route path="/study" element={<></>} />
+                <Route path="/exams" element={<></>} />
+                <Route path="/vault" element={<></>} />
+                <Route path="/profile" element={<></>} />
+                <Route path="/leaderboard" element={<></>} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* প্রটেক্টেড সুপার অ্যাডমিন রাউটিং */}
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="/admin/overview" replace />} />
-              <Route path="overview" element={<AdminOverview />} />
-              <Route path="questions" element={<JsonBatchUploader />} />
-              <Route path="curriculum" element={<CurriculumManager />} />
-              <Route path="mock-exams" element={<AdminMockExamManager />} />
-              <Route path="vault" element={<AdminVaultStudio />} />
-              <Route path="admission-edge" element={<AdminAdmissionEdgeManager />} />
-              <Route path="landing-manager" element={<AdminLandingManager />} />
-              <Route path="users" element={<AdminUserManager />} />
-              <Route path="announcements" element={<AdminAnnouncementManager />} />
-              <Route path="results" element={<AdminExamResultsManager />} />
-              <Route path="doubts" element={<AdminDoubtDesk />} />
-              <Route path="media" element={<ImgBBUploader />} />
+            {/* প্রোটেক্টেড সুপার অ্যাডমিন রাউটিং */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/overview" replace />} />
+                <Route path="overview" element={<AdminOverview />} />
+                <Route path="questions" element={<JsonBatchUploader />} />
+                <Route path="curriculum" element={<CurriculumManager />} />
+                <Route path="mock-exams" element={<AdminMockExamManager />} />
+                <Route path="vault" element={<AdminVaultStudio />} />
+                <Route path="admission-edge" element={<AdminAdmissionEdgeManager />} />
+                <Route path="landing-manager" element={<AdminLandingManager />} />
+                <Route path="users" element={<AdminUserManager />} />
+                <Route path="announcements" element={<AdminAnnouncementManager />} />
+                <Route path="results" element={<AdminExamResultsManager />} />
+                <Route path="doubts" element={<AdminDoubtDesk />} />
+                <Route path="media" element={<ImgBBUploader />} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* অজানা লিংকে হোমপেজে রিডাইরেক্ট */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* অজানা লিংকে হোমপেজে রিডাইরেক্ট */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );

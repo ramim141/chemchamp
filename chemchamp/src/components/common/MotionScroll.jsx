@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 /**
  * ScrollReveal - Smooth Scroll-Triggered Entrance Animation
@@ -84,4 +84,5 @@ export function StaggerItem({ children, y = 16, className = "" }) {
     </motion.div>
   );
 }
+
 

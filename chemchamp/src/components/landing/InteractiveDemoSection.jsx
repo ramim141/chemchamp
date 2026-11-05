@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
   Zap,
@@ -17,7 +17,7 @@ import {
   Flame,
 } from "lucide-react";
 import KaTeXMath from "../common/KaTeXMath";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { DEFAULT_DEMO_CONFIG } from "../../services/landingConfigService";
 
 export default function InteractiveDemoSection({ demoConfig = DEFAULT_DEMO_CONFIG, onRegisterClick }) {
@@ -1035,3 +1035,4 @@ export default function InteractiveDemoSection({ demoConfig = DEFAULT_DEMO_CONFI
     </section>
   );
 }
+

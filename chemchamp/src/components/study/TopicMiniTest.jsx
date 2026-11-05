@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, ArrowRight, RotateCcw, CheckCircle2 } from "lucide-react";
 import KaTeXMath from "../common/KaTeXMath";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { useAuth } from "../../context/AuthContext";
 import { addMistakeQuestion } from "../../services/mistakeService";
 
@@ -295,3 +295,4 @@ export default function TopicMiniTest({
     </div>
   );
 }
+

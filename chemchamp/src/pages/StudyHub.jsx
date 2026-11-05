@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../services/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import Seo from "../components/common/Seo";
 import {
   Compass,
   RefreshCw,
@@ -648,6 +649,7 @@ export default function StudyHub() {
           : "bg-slate-950"
       }`}
     >
+      <Seo title="স্টাডি হাব" noindex />
       {/* 📖 রিড মোড স্ক্রোল প্রগ্রেস বার */}
       {isReadMode && (
         <div className="fixed top-0 left-0 right-0 h-1 bg-slate-900/60 z-50 pointer-events-none">

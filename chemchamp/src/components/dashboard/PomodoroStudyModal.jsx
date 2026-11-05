@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Timer,
   Play,
@@ -14,7 +14,7 @@ import {
   CheckCircle2,
   Atom,
 } from "lucide-react";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { soundService } from "../../services/soundService";
 import { useAuth } from "../../context/AuthContext";
 
@@ -324,4 +324,5 @@ export default function PomodoroStudyModal({ isOpen, onClose }) {
     document.body
   );
 }
+
 

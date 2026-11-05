@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /chemistry
+Allow: /chemistry/
+Allow: /login
+Disallow: /dashboard
+Disallow: /study
+Disallow: /exams
+Disallow: /vault
+Disallow: /leaderboard
+Disallow: /profile
+Disallow: /onboarding
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: https://chemchamp.com/sitemap.xml
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import {
   Sun,
@@ -256,4 +256,5 @@ export default function MorningReminderPopup() {
     document.body
   );
 }
+
 

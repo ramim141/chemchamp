@@ -16,7 +16,7 @@ import {
   GripVertical,
   Save,
 } from "lucide-react";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { useAuth } from "../../context/AuthContext";
 import { soundService } from "../../services/soundService";
 

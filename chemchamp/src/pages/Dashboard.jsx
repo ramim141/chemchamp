@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
+import Seo from "../components/common/Seo";
 import { useAuth, getRpgRankInfo } from "../context/AuthContext";
 import {
   Flame,
@@ -153,6 +154,7 @@ export default function Dashboard() {
 
   return (
     <div className="text-slate-100 pb-28 md:pb-12 pt-2.5 sm:pt-5 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-4">
+      <Seo title="ড্যাশবোর্ড" noindex />
       {/* গ্লোবাল ব্রডকাস্ট নোটিশ ব্যানার */}
       <GlobalAnnouncementBanner />
 
@@ -910,3 +912,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

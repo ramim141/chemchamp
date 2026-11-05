@@ -19,7 +19,7 @@ import {
 import ChemistryMarkdownViewer from "../common/ChemistryMarkdownViewer";
 import TopicPracticeZone from "./TopicPracticeZone";
 import TopicMiniTest from "./TopicMiniTest";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { useAuth } from "../../context/AuthContext";
 import { db } from "../../services/firebase";
 import { doc, setDoc } from "firebase/firestore";

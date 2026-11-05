@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ArrowLeft, ShieldCheck, AlertCircle, Loader2, GraduationCap, Lock, Mail, User } from "lucide-react";
+import Seo from "../components/common/Seo";
 
 export default function Login() {
   const { loginWithGoogle, loginWithEmail, signupWithEmail, user, profile, loading } = useAuth();
@@ -71,6 +72,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-4 relative selection:bg-emerald-500/30 selection:text-emerald-300">
+      <Seo title="লগইন" path="/login" noindex />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-emerald-500/10 blur-[140px] pointer-events-none -z-10" />
 
       {/* ব্যাক বাটন */}

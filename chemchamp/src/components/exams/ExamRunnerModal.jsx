@@ -13,7 +13,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import KaTeXMath from "../common/KaTeXMath";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { useAuth } from "../../context/AuthContext";
 import { mistakeService, ERROR_CATEGORIES } from "../../services/mistakeService";
 import { examHistoryService } from "../../services/examHistoryService";

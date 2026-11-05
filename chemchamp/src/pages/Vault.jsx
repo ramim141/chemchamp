@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
+import Seo from "../components/common/Seo";
 import { Flame, Atom, FileSpreadsheet, RefreshCw, Sparkles, Clock, Printer } from "lucide-react";
 import ReactionFlipCard from "../components/vault/ReactionFlipCard";
 import MiniPeriodicTable from "../components/vault/MiniPeriodicTable";
@@ -99,6 +100,7 @@ export default function Vault() {
 
   return (
     <div className="text-slate-100 pb-28 md:pb-12 pt-3 md:pt-5 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
+      <Seo title="কেমিস্ট্রি ভল্ট" noindex />
       {/* হেডার ও ট্যাব সুইচ */}
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-900 pb-4">
         <div className="flex items-center gap-3">
@@ -331,3 +333,4 @@ export default function Vault() {
     </div>
   );
 }
+

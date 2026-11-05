@@ -1,18 +1,84 @@
 <!doctype html>
-<html lang="en">
+<html lang="bn">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#020617" />
-    <meta name="description" content="ChemChamp - HSC ও এডমিশন কেমিস্ট্রির জন্য স্মার্ট লার্নিং ও প্র্যাকটিস প্ল্যাটফর্ম" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <title>ChemChamp 🧪 | HSC ও এডমিশন কেমিস্ট্রি</title>
+    <title>ChemChamp | HSC ও মেডিকেল-ইঞ্জিনিয়ারিং কেমিস্ট্রি লার্নিং প্ল্যাটফর্ম</title>
+    <meta name="description" content="ChemChamp - HSC ও এডমিশন (BUET, Medical, Varsity) কেমিস্ট্রি প্রস্তুতির জন্য বাংলাদেশের প্রথম পূর্ণাঙ্গ স্মার্ট লার্নিং প্ল্যাটফর্ম। অধ্যায়ভিত্তিক সিলেবাস, রিয়েল ওএমআর মক টেস্ট, বস ফাইট ও কেমিস্ট্রি ভল্ট।" />
+    <link rel="canonical" href="https://chemchamp.com/" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chemchamp.com/" />
+    <meta property="og:title" content="ChemChamp | HSC ও মেডিকেল-ইঞ্জিনিয়ারিং কেমিস্ট্রি লার্নিং প্ল্যাটফর্ম" />
+    <meta property="og:description" content="HSC ও এডমিশন কেমিস্ট্রি প্রস্তুতির জন্য বাংলাদেশের প্রথম ইন্টারেক্টিভ স্মার্ট লার্নিং প্ল্যাটফর্ম। অধ্যায়ভিত্তিক সিলেবাস, রিয়েল ওএমআর মক টেস্ট ও কেমিস্ট্রি ভল্ট।" />
+    <meta property="og:image" content="https://chemchamp.com/og-image.png" />
+    <meta property="og:locale" content="bn_BD" />
+    <meta property="og:site_name" content="ChemChamp" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://chemchamp.com/" />
+    <meta name="twitter:title" content="ChemChamp | HSC ও এডমিশন কেমিস্ট্রি" />
+    <meta name="twitter:description" content="অধ্যায়ভিত্তিক সিলেবাস, রিয়েল ওএমআর মক টেস্ট, বস ফাইট ও কেমিস্ট্রি ভল্ট।" />
+    <meta name="twitter:image" content="https://chemchamp.com/og-image.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data: Organization & WebSite JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://chemchamp.com/#organization",
+          "name": "ChemChamp",
+          "url": "https://chemchamp.com",
+          "logo": "https://chemchamp.com/favicon.svg",
+          "description": "HSC ও এডমিশন কেমিস্ট্রির জন্য বাংলাদেশের আধুনিক ইন্টারেক্টিভ লার্নিং প্ল্যাটফর্ম",
+          "sameAs": []
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://chemchamp.com/#website",
+          "url": "https://chemchamp.com",
+          "name": "ChemChamp",
+          "publisher": {
+            "@id": "https://chemchamp.com/#organization"
+          },
+          "inLanguage": "bn"
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Crawler & Accessibility Semantic Fallback (Visible before client hydration) -->
+      <header style="padding: 24px; text-align: center;">
+        <h1 style="font-size: 28px; font-weight: bold; color: #10b981;">
+          ChemChamp - HSC ও এডমিশন কেমিস্ট্রি লার্নিং প্ল্যাটফর্ম
+        </h1>
+        <p style="font-size: 16px; color: #94a3b8; max-width: 600px; margin: 12px auto;">
+          বোর্ড স্ট্যান্ডার্ড, বুয়েট এবং মেডিকেল ভর্তি পরীক্ষার জন্য রসায়ন ১ম ও ২য় পত্রের অধ্যায়ভিত্তিক সিলেবাস, রিয়েল ওএমআর মক টেস্ট, বস ফাইট ও কেমিস্ট্রি ভল্ট।
+        </p>
+      </header>
+      <main style="padding: 20px; max-width: 800px; margin: 0 auto; color: #cbd5e1;">
+        <p>লোডিং হচ্ছে... দয়া করে অপেক্ষা করুন অথবা জাভাস্ক্রিপ্ট সক্রিয় করুন।</p>
+        <nav style="margin-top: 16px;">
+          <a href="/chemistry" style="color: #34d399; margin-right: 16px;">কেমিস্ট্রি অধ্যায়সমূহ</a>
+          <a href="/login" style="color: #38bdf8;">লগইন / শুরু করুন</a>
+        </nav>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

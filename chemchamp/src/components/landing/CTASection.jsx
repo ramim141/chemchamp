@@ -1,6 +1,6 @@
 import React from "react";
 import { Sparkles, ArrowRight, CheckCircle2, ShieldCheck, Flame, BookOpen } from "lucide-react";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 
 export default function CTASection({ onStartClick, user }) {
   const handleClick = (e) => {

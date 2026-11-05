@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
+import Seo from "../components/common/Seo";
 import {
   Trophy,
   Swords,
@@ -372,6 +373,7 @@ export default function Leaderboard() {
 
   return (
     <div className="text-slate-100 pb-28 md:pb-12 pt-3 md:pt-5 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
+      <Seo title="লিডারবোর্ড" noindex />
       {/* হেডার */}
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-900 pb-4">
         <div className="flex items-center gap-3">

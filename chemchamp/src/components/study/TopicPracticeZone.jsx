@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle2, XCircle, Eye, EyeOff } from "lucide-react";
 import KaTeXMath from "../common/KaTeXMath";
 import { useAuth } from "../../context/AuthContext";
@@ -332,3 +332,4 @@ export default function TopicPracticeZone({
     </div>
   );
 }
+

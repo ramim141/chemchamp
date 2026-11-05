@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+import Seo from "../components/common/Seo";
 import {
   LayoutDashboard,
   FileQuestion,
@@ -103,6 +104,7 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row selection:bg-amber-500/30 selection:text-amber-300">
+      <Seo title="অ্যাডমিন স্টুডিও" noindex />
       
       {/* ১. মোবাইল ড্রয়ারের জন্য ব্যাকড্রপ */}
       {mobileMenuOpen && (

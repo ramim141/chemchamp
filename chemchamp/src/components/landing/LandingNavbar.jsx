@@ -25,6 +25,7 @@ export default function LandingNavbar({ toggles = {} }) {
   };
 
   const navLinks = [
+    { name: "কেমিস্ট্রি পাঠ", href: "/chemistry", isRouterLink: true },
     toggles.showFeatures !== false && { name: "ফিচারসমূহ", href: "#features" },
     toggles.showTracks !== false && { name: "টার্গেট ট্র্যাক", href: "#tracks" },
     toggles.showDemo !== false && { name: "লাইভ ডেমো", href: "#demo" },
@@ -58,15 +59,25 @@ export default function LandingNavbar({ toggles = {} }) {
 
         {/* Desktop Links (Smart SaaS layout) */}
         <div className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800/60">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-xs font-semibold text-slate-300 hover:text-emerald-400 hover:bg-slate-800/60 px-3.5 py-1.5 rounded-lg transition-all"
-            >
-              {link.name}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.isRouterLink ? (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-slate-800/60 px-3.5 py-1.5 rounded-lg transition-all"
+              >
+                {link.name}
+              </Link>
+            ) : (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-xs font-semibold text-slate-300 hover:text-emerald-400 hover:bg-slate-800/60 px-3.5 py-1.5 rounded-lg transition-all"
+              >
+                {link.name}
+              </a>
+            )
+          )}
         </div>
 
         {/* Right CTA / Auth Button */}
@@ -114,16 +125,27 @@ export default function LandingNavbar({ toggles = {} }) {
       {mobileMenuOpen && (
         <div className="md:hidden max-w-6xl mx-auto mt-2 bg-slate-900/95 border border-slate-800/90 rounded-xl p-3.5 backdrop-blur-2xl shadow-2xl animate-in slide-in-from-top duration-200">
           <div className="grid grid-cols-2 gap-2 mb-3">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center text-xs font-medium text-slate-300 hover:text-emerald-400 py-2 px-3 rounded-lg bg-slate-950/60 border border-slate-800 hover:border-emerald-500/30 transition-all"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.isRouterLink ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center text-xs font-semibold text-emerald-400 py-2 px-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 transition-all"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center text-xs font-medium text-slate-300 hover:text-emerald-400 py-2 px-3 rounded-lg bg-slate-950/60 border border-slate-800 hover:border-emerald-500/30 transition-all"
+                >
+                  {link.name}
+                </a>
+              )
+            )}
           </div>
           <button
             onClick={() => {

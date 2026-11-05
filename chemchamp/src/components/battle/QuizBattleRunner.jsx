@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Swords, Timer, Trophy, X, CheckCircle2, XCircle } from "lucide-react";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 import { useAuth } from "../../context/AuthContext";
 import KaTeXMath from "../common/KaTeXMath";
 import { soundService } from "../../services/soundService";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   GraduationCap,
   Building2,
@@ -173,3 +173,4 @@ export default function TargetTracksSection({ tracks = DEFAULT_TRACKS }) {
     </section>
   );
 }
+

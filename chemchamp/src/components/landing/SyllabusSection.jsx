@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { BookOpen, Check, ChevronRight, Sparkles, Award } from "lucide-react";
 
 export default function SyllabusSection() {
@@ -168,3 +168,4 @@ export default function SyllabusSection() {
     </section>
   );
 }
+

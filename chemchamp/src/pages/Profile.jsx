@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth, getRpgRankInfo } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import Seo from "../components/common/Seo";
 import {
   User,
   LogOut,
@@ -315,6 +316,7 @@ export default function Profile() {
 
   return (
     <div className="text-slate-100 pb-28 md:pb-12 pt-3 md:pt-6 px-3 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+      <Seo title="প্রোফাইল" noindex />
       {/* 1. Header Hero Banner */}
       <header className="mb-6 pb-5 border-b border-slate-900 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">

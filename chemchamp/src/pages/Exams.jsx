@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
+import Seo from "../components/common/Seo";
 import {
   GraduationCap,
   Swords,
@@ -530,6 +531,7 @@ export default function Exams() {
 
   return (
     <div className="text-slate-100 pb-28 md:pb-12 pt-2.5 sm:pt-5 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-3.5 sm:space-y-5">
+      <Seo title="এক্সাম রুম" noindex />
       {/* গ্লোবাল ব্রডকাস্ট নোটিশ ব্যানার */}
       <GlobalAnnouncementBanner />
 
@@ -1107,3 +1109,4 @@ export default function Exams() {
     </div>
   );
 }
+

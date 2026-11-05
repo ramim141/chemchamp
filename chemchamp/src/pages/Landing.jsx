@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Sparkles, ArrowRight, Home, Layers, Play, BookOpen, Target, ChevronRight } from "lucide-react";
+import Seo from "../components/common/Seo";
 import LandingNavbar from "../components/landing/LandingNavbar";
 import HeroSection from "../components/landing/HeroSection";
 import FeaturesGrid from "../components/landing/FeaturesGrid";
@@ -56,6 +57,11 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-300 pb-20 md:pb-0 relative">
+      <Seo
+        path="/"
+        title="ChemChamp | HSC ও মেডিকেল-ইঞ্জিনিয়ারিং কেমিস্ট্রি লার্নিং প্ল্যাটফর্ম"
+        description="ChemChamp - HSC ও এডমিশন কেমিস্ট্রি প্রস্তুতির জন্য বাংলাদেশের প্রথম পূর্ণাঙ্গ স্মার্ট লার্নিং প্ল্যাটফর্ম। অধ্যায়ভিত্তিক সিলেবাস, রিয়েল ওএমআর মক টেস্ট, বস ফাইট ও কেমিস্ট্রি ভল্ট।"
+      />
       <LandingNavbar toggles={toggles} />
       <main>
         <HeroSection />

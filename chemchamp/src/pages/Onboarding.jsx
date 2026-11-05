@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../services/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import Seo from "../components/common/Seo";
 
 export default function Onboarding() {
   const { user, profile, setProfile } = useAuth();
@@ -44,6 +45,7 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center p-4">
+      <Seo title="অনবোর্ডিং" noindex />
       <div className="max-w-md w-full bg-slate-800/80 border border-slate-700 rounded-xl p-6 shadow-xl backdrop-blur-md">
         <div className="text-center mb-6">
           <span className="text-3xl">🧪</span>

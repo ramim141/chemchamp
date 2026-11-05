@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   Heart,
   Sparkles,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 export default function LandingFooter() {
+  const { user } = useAuth();
   return (
     <footer className="border-t border-slate-900 bg-slate-950 text-slate-400 pt-16 pb-12 px-4 sm:px-6 relative overflow-hidden">
       {/* Background ambient lighting */}
@@ -57,47 +59,65 @@ export default function LandingFooter() {
             </div>
           </div>
 
-          {/* Column 2: Platform Modules (3 cols on lg) */}
+          {/* Column 2: Platform Modules / Public Content (3 cols on lg) */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span>প্ল্যাটফর্ম মডিউল</span>
+              <span>{user ? "প্ল্যাটফর্ম মডিউল" : "কেমিস্ট্রি অধ্যায় ও নোটস"}</span>
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/dashboard" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/dashboard" : "/chemistry"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>ড্যাশবোর্ড ও ডেইলি মিশন</span>
+                  <span>{user ? "ড্যাশবোর্ড ও ডেইলি মিশন" : "সকল কেমিস্ট্রি অধ্যায় (সিলেবাস)"}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/study" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/study" : "/chemistry/qualitative-chemistry"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>সিলেবাস ও স্টাডি হাব</span>
+                  <span>{user ? "সিলেবাস ও স্টাডি হাব" : "গুণগত রসায়ন (১ম পত্র)"}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/exams" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/exams" : "/chemistry/organic-chemistry"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>এক্সাম রুম ও প্রশ্নব্যাংক</span>
+                  <span>{user ? "এক্সাম রুম ও প্রশ্নব্যাংক" : "জৈব রসায়ন ও সমীকরণ (২য় পত্র)"}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/vault" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/vault" : "/chemistry/chemical-changes"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>কেমিস্ট্রি ফর্মুলা ভল্ট</span>
+                  <span>{user ? "কেমিস্ট্রি ফর্মুলা ভল্ট" : "রাসায়নিক পরিবর্তন ও বাফার"}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/leaderboard" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/leaderboard" : "/chemistry/environmental-chemistry"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>অল-বাংলাদেশ লিডারবোর্ড</span>
+                  <span>{user ? "অল-বাংলাদেশ লিডারবোর্ড" : "পরিবেশ রসায়ন ও গ্যাস সূত্র"}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/profile" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                <Link
+                  to={user ? "/profile" : "/login"}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
                   <ChevronRight className="w-3 h-3 text-slate-600" />
-                  <span>মিস্টেক খাতা (Leitner Box)</span>
+                  <span>{user ? "মিস্টেক খাতা (Leitner Box)" : "ফ্রি একাউন্ট / লগইন করুন"}</span>
                 </Link>
               </li>
             </ul>

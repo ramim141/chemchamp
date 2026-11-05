@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../../context/AuthContext";
 import {
   Sparkles,
@@ -20,7 +20,7 @@ import {
   XCircle,
 } from "lucide-react";
 import KaTeXMath from "../common/KaTeXMath";
-import confetti from "canvas-confetti";
+import { fireConfetti as confetti } from "../../utils/confetti";
 
 // Interactive Demo Reactions for the Hero Sandbox
 const HERO_REACTIONS = [
@@ -451,3 +451,4 @@ export default function HeroSection() {
     </section>
   );
 }
+
