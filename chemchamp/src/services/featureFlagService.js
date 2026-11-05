@@ -1,3 +1,4 @@
+import { cacheService } from "./cacheService";
 import { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
@@ -17,7 +18,7 @@ export const featureFlagService = {
       if (cached) {
         return { ...DEFAULT_FLAGS, ...JSON.parse(cached) };
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
     return DEFAULT_FLAGS;
@@ -78,7 +79,7 @@ export const featureFlagService = {
           callback(this.getFlagsSync());
         }
       );
-    } catch (e) {
+    } catch {
       callback(this.getFlagsSync());
       return () => {};
     }
@@ -89,13 +90,20 @@ export function useFeatureFlags() {
   const [flags, setFlags] = useState(() => featureFlagService.getFlagsSync());
 
   useEffect(() => {
-    setFlags(featureFlagService.getFlagsSync());
-    const unsubscribe = featureFlagService.subscribe((updatedFlags) => {
-      setFlags(updatedFlags);
+    let mounted = true;
+    // Check 1h cached flags
+    cacheService.getOrFetch(
+      "chemchamp_feature_flags_1h",
+      async () => {
+        return await featureFlagService.getFlags();
+      },
+      60 * 60 * 1000 // 1 hour TTL
+    ).then((cached) => {
+      if (mounted && cached) setFlags(cached);
     });
 
     return () => {
-      if (typeof unsubscribe === "function") unsubscribe();
+      mounted = false;
     };
   }, []);
 

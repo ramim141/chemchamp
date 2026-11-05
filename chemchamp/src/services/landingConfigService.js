@@ -1,3 +1,4 @@
+import { cacheService } from "./cacheService";
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 
@@ -267,7 +268,11 @@ export const landingConfigService = {
     return DEFAULT_LANDING_CONFIG;
   },
 
-  async getConfig() {
+  async getConfig(force = false) {
+    if (!force) {
+      const cached = await cacheService.get("chemchamp_landing_config_1h");
+      if (cached) return cached;
+    }
     try {
       const docRef = doc(db, SETTINGS_COLLECTION, SETTINGS_DOC);
       const snap = await getDoc(docRef);
@@ -288,12 +293,10 @@ export const landingConfigService = {
           faqs: Array.isArray(remoteData.faqs) && remoteData.faqs.length > 0 ? remoteData.faqs : DEFAULT_FAQS,
         };
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(merged));
+        await cacheService.set("chemchamp_landing_config_1h", merged, 60 * 60 * 1000); // 1 hour TTL
         return merged;
       } else {
-        // Initialize doc in Firestore
-        await setDoc(docRef, DEFAULT_LANDING_CONFIG, { merge: true });
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(DEFAULT_LANDING_CONFIG));
-        return DEFAULT_LANDING_CONFIG;
+        return this.getLocalConfig();
       }
     } catch (err) {
       console.warn("Could not fetch remote landing config, falling back to cached/default:", err);

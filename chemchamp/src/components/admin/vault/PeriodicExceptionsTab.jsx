@@ -1,3 +1,4 @@
+import { contentVersionService } from "../../../services/contentVersionService";
 import React, { useState, useEffect } from "react";
 import { cacheService } from "../../../services/cacheService";
 import { db } from "../../../services/firebase";
@@ -66,6 +67,7 @@ export default function PeriodicExceptionsTab() {
       );
       setModal({ open: false, data: null });
       cacheService.remove("vault_periodic_elements");
+      contentVersionService.bumpVersion("vault");
       fetchElements();
     } catch (err) {
       alert("সংরক্ষণ ব্যর্থ: " + err.message);
@@ -77,6 +79,7 @@ export default function PeriodicExceptionsTab() {
     try {
       await deleteDoc(doc(db, "periodicElements", id));
       cacheService.remove("vault_periodic_elements");
+      contentVersionService.bumpVersion("vault");
       setElements((prev) => prev.filter((el) => el.id !== id));
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);

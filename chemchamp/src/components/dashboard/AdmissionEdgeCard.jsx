@@ -9,6 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
+import { cacheService } from "../../services/cacheService";
 import { db } from "../../services/firebase";
 import KaTeXMath from "../common/KaTeXMath";
 
@@ -22,15 +23,18 @@ export default function AdmissionEdgeCard({ totalSolved = 0, accuracy = 88 }) {
     const fetchEdgeData = async () => {
       setLoading(true);
       try {
-        const snap = await getDoc(doc(db, "admissionEdge", "config"));
-        if (snap.exists()) {
-          const data = snap.data();
-          if (Array.isArray(data.matrix) && data.matrix.length > 0) {
-            setMatrixData(data.matrix);
-          }
-          if (Array.isArray(data.hacks) && data.hacks.length > 0) {
-            setHacksData(data.hacks);
-          }
+        const data = await cacheService.getOrFetch(
+          "admission_edge_config_cache",
+          async () => {
+            const snap = await getDoc(doc(db, "admissionEdge", "config"));
+            return snap.exists() ? snap.data() : null;
+          },
+          24 * 60 * 60 * 1000, // 24h TTL
+          null
+        );
+        if (data) {
+          if (Array.isArray(data.matrix) && data.matrix.length > 0) setMatrixData(data.matrix);
+          if (Array.isArray(data.hacks) && data.hacks.length > 0) setHacksData(data.hacks);
         }
       } catch (err) {
         console.warn("Could not load dynamic admission edge data:", err);

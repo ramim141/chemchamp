@@ -393,3 +393,4 @@ fs.writeFileSync(path.resolve(__dirname, "../public/sitemap.xml"), sitemapXml, "
 console.log("  ✓ Generated: dist/sitemap.xml & updated public/sitemap.xml");
 
 console.log("✅ Static HTML Pre-rendering & Sitemap generation completed successfully!");
+

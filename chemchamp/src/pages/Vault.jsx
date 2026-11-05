@@ -8,7 +8,7 @@ import MiniPeriodicTable from "../components/vault/MiniPeriodicTable";
 import FormulaCard from "../components/vault/FormulaCard";
 import CustomCheatSheetModal from "../components/vault/CustomCheatSheetModal";
 import { db } from "../services/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, limit, query } from "firebase/firestore";
 import { cacheService } from "../services/cacheService";
 import { useAuth } from "../context/AuthContext";
 
@@ -57,9 +57,9 @@ export default function Vault() {
     try {
       // 1. Flashcards from Firestore
       const remoteCards = await cacheService.getOrFetch("vault_flashcards", async () => {
-        const cardsSnap = await getDocs(collection(db, "flashcards"));
+        const cardsSnap = await getDocs(query(collection(db, "flashcards"), limit(150)));
         return cardsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      }, 60 * 60 * 1000, []);
+      }, 24 * 60 * 60 * 1000, []); // 24h TTL
       setFlashcards(remoteCards || []);
 
       // 2. Periodic Elements from Firestore
@@ -73,9 +73,9 @@ export default function Vault() {
 
       // 3. Formulas from Firestore
       const remoteForms = await cacheService.getOrFetch("vault_formulas", async () => {
-        const formSnap = await getDocs(collection(db, "formulas"));
+        const formSnap = await getDocs(query(collection(db, "formulas"), limit(100)));
         return formSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      }, 24 * 60 * 60 * 1000, []);
+      }, 24 * 60 * 60 * 1000, []); // 24h TTL
       setFormulas(remoteForms || []);
     } catch (err) {
       console.warn("Vault fetch error:", err);

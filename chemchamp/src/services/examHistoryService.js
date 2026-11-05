@@ -3,6 +3,7 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 // ChemChamp Exam History & Performance Tracker Service
 const STORAGE_PREFIX = "chemchamp_exam_history_";
+const submittedAttemptsGuard = new Set();
 
 export const examHistoryService = {
   /**
@@ -58,17 +59,34 @@ export const examHistoryService = {
       const updated = [newEntry, ...history].slice(0, 50); // Keep last 50 attempts
       localStorage.setItem(`${STORAGE_PREFIX}${userId}`, JSON.stringify(updated));
 
-      // Asynchronously sync to Firestore examAttempts for admin analytics & merit list
-      try {
-        setDoc(doc(db, "examAttempts", newEntry.id), {
-          ...newEntry,
-          userId,
-          createdAt: serverTimestamp(),
-        }).catch((e) => {
-          console.warn("Background exam attempt sync warning:", e);
-        });
-      } catch (err) {
-        // sync failure should not break student flow
+      // Asynchronously sync to Firestore examAttempts once (guarded against duplicate retries)
+      if (!submittedAttemptsGuard.has(newEntry.id) && userId && userId !== "guest") {
+        submittedAttemptsGuard.add(newEntry.id);
+        try {
+          setDoc(doc(db, "examAttempts", newEntry.id), {
+            id: newEntry.id,
+            examId: newEntry.examId,
+            examTitle: newEntry.examTitle,
+            chapter: newEntry.chapter,
+            paper: newEntry.paper,
+            totalQuestions: newEntry.totalQuestions,
+            correctCount: newEntry.correctCount,
+            wrongCount: newEntry.wrongCount,
+            finalScore: newEntry.finalScore,
+            accuracy: newEntry.accuracy,
+            gainedXp: newEntry.gainedXp,
+            studentName: newEntry.studentName,
+            studentCollege: newEntry.studentCollege,
+            hscBatch: newEntry.hscBatch,
+            timeTakenSeconds: newEntry.timeTakenSeconds,
+            userId,
+            createdAt: serverTimestamp(),
+          }).catch((e) => {
+            console.warn("Background exam attempt sync warning:", e);
+          });
+        } catch {
+          // Failure should not break student flow
+        }
       }
 
       return updated;

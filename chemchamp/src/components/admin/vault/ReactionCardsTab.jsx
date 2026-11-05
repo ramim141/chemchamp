@@ -1,3 +1,4 @@
+import { contentVersionService } from "../../../services/contentVersionService";
 import React, { useState, useEffect } from "react";
 import { cacheService } from "../../../services/cacheService";
 import { db } from "../../../services/firebase";
@@ -132,6 +133,7 @@ export default function ReactionCardsTab() {
       );
       setModal({ open: false, data: null });
       cacheService.remove("vault_flashcards");
+      contentVersionService.bumpVersion("vault");
       fetchCards();
     } catch (err) {
       alert("সংরক্ষণ ব্যর্থ: " + err.message);
@@ -143,6 +145,7 @@ export default function ReactionCardsTab() {
     try {
       await deleteDoc(doc(db, "flashcards", id));
       cacheService.remove("vault_flashcards");
+      contentVersionService.bumpVersion("vault");
       setCards((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);
@@ -185,6 +188,7 @@ export default function ReactionCardsTab() {
 
       await batch.commit();
       cacheService.remove("vault_flashcards");
+      contentVersionService.bumpVersion("vault");
       alert(`সফলভাবে ${parsed.length}টি ফ্লিপকার্ড আপলোড করা হয়েছে!`);
       setIsBulkOpen(false);
       setJsonInput("");

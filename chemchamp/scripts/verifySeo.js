@@ -79,3 +79,4 @@ for (const f of privateFiles) {
 console.log("\n=========================================");
 console.log("✅ All Technical SEO Verification Passed!");
 console.log("=========================================\n");
+

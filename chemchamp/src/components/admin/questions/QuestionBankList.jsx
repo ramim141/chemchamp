@@ -34,6 +34,7 @@ import {
 import KaTeXMath from "../../common/KaTeXMath";
 import SingleQuestionModal from "./SingleQuestionModal";
 import { cacheService } from "../../../services/cacheService";
+import { contentVersionService } from "../../../services/contentVersionService";
 
 export default function QuestionBankList({
   selectedChapter,
@@ -129,6 +130,7 @@ export default function QuestionBankList({
       );
       setEditModal({ open: false, data: null });
       cacheService.remove("chemchamp_all_questions");
+      contentVersionService.bumpVersion("questions");
       fetchQuestions();
     } catch (err) {
       alert("সংরক্ষণ ব্যর্থ: " + err.message);
@@ -147,6 +149,7 @@ export default function QuestionBankList({
         return next;
       });
       cacheService.remove("chemchamp_all_questions");
+      contentVersionService.bumpVersion("questions");
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);
     }
@@ -180,6 +183,7 @@ export default function QuestionBankList({
       setQuestions((prev) => prev.filter((q) => !selectedIds.has(q.id)));
       setSelectedIds(new Set());
       cacheService.remove("chemchamp_all_questions");
+      contentVersionService.bumpVersion("questions");
     } catch (err) {
       alert("বাল্ক ডিলিট ব্যর্থ: " + err.message);
     } finally {

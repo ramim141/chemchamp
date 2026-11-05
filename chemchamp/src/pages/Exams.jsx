@@ -42,7 +42,7 @@ import { cacheService } from "../services/cacheService";
 import { getExamBadgeStyle } from "../utils/examTagUtils";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../services/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, limit, query } from "firebase/firestore";
 
 // অধ্যায়ের নামের সাথে মিলিয়ে ডাইনামিক বসের থিম ও মেটাডাটা
 function getDynamicBossMeta(chapterTitle = "") {
@@ -223,7 +223,7 @@ export default function Exams() {
         const list = cSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
         list.sort((a, b) => (Number(a.sequenceOrder) || 0) - (Number(b.sequenceOrder) || 0));
         return list;
-      }, 30 * 60 * 1000, []);
+      }, 24 * 60 * 60 * 1000, []); // 24h TTL
       setChapters(cList || []);
     } catch (err) {
       console.warn("Could not load chapters:", err);
@@ -232,9 +232,9 @@ export default function Exams() {
     // 4. Questions from Firestore (MCQ & CQ) (Cache-First Instant Display)
     try {
       const list = await cacheService.getOrFetch("chemchamp_all_questions", async () => {
-        const qSnap = await getDocs(collection(db, "questions"));
+        const qSnap = await getDocs(query(collection(db, "questions"), limit(150)));
         return qSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      }, 30 * 60 * 1000, []);
+      }, 24 * 60 * 60 * 1000, []); // 24h TTL, capped to 150 questions
       setAllQuestions(list || []);
     } catch (err) {
       console.warn("Could not load questions:", err);
@@ -244,7 +244,7 @@ export default function Exams() {
     // 5. Admin Created Mock Exams from Firestore (Cache-First Instant Display)
     try {
       const list = await cacheService.getOrFetch("chemchamp_published_mock_exams", async () => {
-        const eSnap = await getDocs(collection(db, "mockExams"));
+        const eSnap = await getDocs(query(collection(db, "mockExams"), limit(30)));
         return eSnap.docs
           .map((d) => ({ id: d.id, ...d.data() }))
           .filter((e) => e.published !== false);

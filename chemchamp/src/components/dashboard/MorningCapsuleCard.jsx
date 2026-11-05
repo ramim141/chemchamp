@@ -14,6 +14,7 @@ import { useAuth } from "../../context/AuthContext";
 import { mistakeService, ERROR_CATEGORIES } from "../../services/mistakeService";
 import { db } from "../../services/firebase";
 import { collection, getDocs, limit, query } from "firebase/firestore";
+import { cacheService } from "../../services/cacheService";
 
 const DEFAULT_CAPSULE_QUESTIONS = [
   {
@@ -80,6 +81,12 @@ export default function MorningCapsuleCard() {
     let mounted = true;
     const loadDailyCapsule = async () => {
       try {
+        const todayStr = new Date().toISOString().split("T")[0];
+        const cached = await cacheService.get(`daily_capsule_${todayStr}`);
+        if (cached && mounted) {
+          setQuestions(cached);
+          return;
+        }
         const snap = await getDocs(query(collection(db, "questions"), limit(15)));
         if (!snap.empty && mounted) {
           const mcqDocs = snap.docs
@@ -101,6 +108,8 @@ export default function MorningCapsuleCard() {
               explanation: q.explanation || "সঠিক উত্তরটি বোর্ড স্ট্যান্ডার্ড অনুযায়ী যাচাইকৃত।",
             }));
             setQuestions(formatted);
+            const todayKey = new Date().toISOString().split("T")[0];
+            await cacheService.set(`daily_capsule_${todayKey}`, formatted, 24 * 60 * 60 * 1000);
           }
         }
       } catch {

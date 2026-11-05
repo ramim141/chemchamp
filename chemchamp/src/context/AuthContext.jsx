@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { AppInitialSkeleton } from "../components/common/SkeletonLoader";
+import { contentVersionService } from "../services/contentVersionService";
 
 const AuthContext = createContext();
 const CACHE_KEY = "chemchamp_cached_profile";
@@ -112,11 +113,12 @@ export const AuthProvider = ({ children }) => {
 
     window.addEventListener("online", syncPendingOfflineData);
     syncPendingOfflineData();
+    contentVersionService.checkAndSyncVersion();
     return () => window.removeEventListener("online", syncPendingOfflineData);
   }, [user]);
 
-  // ইউজার প্রোফাইল লোকাল ও ফায়ারস্টোরে একসাথে সিঙ্ক করার হেল্পার
-  const syncUserProfile = async (partialUpdate) => {
+  // ইউজার প্রোফাইল লোকাল ও ফায়ারস্টোরে অপ্টিমাইজড ডিবাউন্সড ব্যাচ রাইট (30s)
+  const syncUserProfile = async (partialUpdate, immediate = false) => {
     const merged = {
       ...(profile || {}),
       ...partialUpdate,
@@ -145,22 +147,29 @@ export const AuthProvider = ({ children }) => {
       merged.gamification.streakCount = merged.streakCount;
     }
 
+    // Update React state & localStorage cache instantly for 0ms UI feedback
     updateProfileState(merged);
 
     if (user?.uid) {
+      // Accumulate into pending batch
+      pendingUpdatesRef.current = deepMerge(pendingUpdatesRef.current, partialUpdate);
+
+      // Save to localStorage immediately so zero data is lost even on crash
       try {
-        const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, partialUpdate, { merge: true });
-      } catch (err) {
-        console.warn("Offline or Firestore write deferred, queued for auto-sync:", err);
-        try {
-          localStorage.setItem(
-            PENDING_SYNC_KEY,
-            JSON.stringify({ uid: user.uid, payload: merged, timestamp: Date.now() })
-          );
-        } catch {
-          // ignore
-        }
+        localStorage.setItem(
+          PENDING_SYNC_KEY,
+          JSON.stringify({ uid: user.uid, payload: pendingUpdatesRef.current, timestamp: Date.now() })
+        );
+      } catch {}
+
+      if (immediate) {
+        await flushPendingUpdates();
+      } else {
+        // Debounce: flush every 30 seconds
+        if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+        flushTimerRef.current = setTimeout(() => {
+          flushPendingUpdates();
+        }, 30000); // 30s batch window
       }
     }
     return merged;
@@ -358,6 +367,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      await flushPendingUpdates();
       await signOut(auth);
       setUser(null);
       setProfile(null);

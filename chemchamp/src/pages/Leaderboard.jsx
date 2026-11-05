@@ -27,7 +27,7 @@ import QuizBattleRunner from "../components/battle/QuizBattleRunner";
 import { cacheService } from "../services/cacheService";
 import { SkeletonList } from "../components/common/SkeletonLoader";
 import { db } from "../services/firebase";
-import { collection, getDocs, limit, query } from "firebase/firestore";
+import { collection, getDocs, limit, query, orderBy } from "firebase/firestore";
 
 export default function Leaderboard() {
   const { user, profile } = useAuth();
@@ -75,8 +75,8 @@ export default function Leaderboard() {
 
   // Fetch live users and questions from Firestore
   const fetchLiveUsersAndQuestions = async (forceRefresh = false) => {
+    // 1. Stale-While-Revalidate: Serve cached users immediately
     if (!forceRefresh) {
-      // 1. Instant Cache-First Display (0ms latency)
       const cachedUsers = await cacheService.get("chemchamp_leaderboard_users");
       if (Array.isArray(cachedUsers) && cachedUsers.length > 0) {
         setFirestoreUsers(cachedUsers);
@@ -88,14 +88,26 @@ export default function Leaderboard() {
       setLoading(true);
     }
 
+    // 2. Background Revalidation: Query true Top-50 sorted by XP in Firestore
     try {
-      const usersSnap = await getDocs(query(collection(db, "users"), limit(60)));
+      let usersSnap;
+      try {
+        const topQuery = query(
+          collection(db, "users"),
+          orderBy("gamification.currentXP", "desc"),
+          limit(50)
+        );
+        usersSnap = await getDocs(topQuery);
+      } catch (orderErr) {
+        console.warn("Falling back to un-ordered users limit(50):", orderErr);
+        usersSnap = await getDocs(query(collection(db, "users"), limit(50)));
+      }
+
       const loadedUsers = usersSnap.docs.map((docSnap) => {
         const d = docSnap.data();
         const xp = Number(d.gamification?.currentXP ?? d.xp ?? 0);
         const rankInfo = getRpgRankInfo(xp);
 
-        // Normalize College: only accept if it is an actual college name and not an exam target
         let rawCol = (d.college || "").trim();
         if (
           rawCol.toLowerCase().startsWith("hsc") ||
@@ -120,44 +132,19 @@ export default function Leaderboard() {
           battlesPlayed: Number(d.stats?.battlesPlayed) || 0,
         };
       });
+
+      // Ensure sorted by XP
+      loadedUsers.sort((a, b) => b.xp - a.xp);
+
       setFirestoreUsers(loadedUsers);
       await cacheService.set("chemchamp_leaderboard_users", loadedUsers, 10 * 60 * 1000);
     } catch (err) {
       console.warn("Could not load live leaderboard users:", err);
-    }
-
-    try {
-      const qSnap = await getDocs(query(collection(db, "questions"), limit(60)));
-      const loadedQs = qSnap.docs
-        .map((d) => ({ id: d.id, ...d.data() }))
-        .filter(
-          (q) =>
-            (q.stem || q.question) &&
-            Array.isArray(q.options) &&
-            q.options.length >= 4 &&
-            (q.type === "MCQ" || !q.type)
-        )
-        .map((q) => ({
-          question: q.stem || q.question,
-          options: q.options,
-          answerIndex:
-            typeof q.answerIndex === "number"
-              ? q.answerIndex
-              : typeof q.correctOption === "number"
-              ? q.correctOption
-              : 0,
-          hint: q.explanation || q.hint || "",
-        }));
-
-      if (loadedQs.length >= 5) {
-        setBattlePool(loadedQs);
-        setDuelQuestions(loadedQs.slice(0, 5));
-      }
-    } catch (err) {
-      console.warn("Using battle question pool fallback:", err);
     } finally {
       setLoading(false);
     }
+
+    // Note: The unrelated 60-question fetch on initial mount has been removed to save 60 reads.
   };
 
   const handleRefresh = async () => {

@@ -151,7 +151,7 @@ export default function StudyHub() {
     setIntroCompleted(prog.introCompleted);
     setCompletedTopicIds(prog.completedTopicIds);
 
-    // 1. Instant Cache-First Display (0ms delay)
+    // 1. Instant Cache-First Display (24h TTL)
     const cachedTopics = await cacheService.get(`chapter_topics_${chapter.id}`);
     const cachedSubtopics = await cacheService.get(`chapter_subtopics_${chapter.id}`);
     if (Array.isArray(cachedTopics) && cachedTopics.length > 0 && cachedSubtopics) {
@@ -164,9 +164,10 @@ export default function StudyHub() {
         setActiveTopicIndex(prog.introCompleted && cachedTopics.length > 0 ? 0 : -1);
       }
       setActiveSubtopicIndex(0);
-    } else {
-      setLoadingLesson(true);
+      return; // Cache hit: 0 Firestore reads!
     }
+
+    setLoadingLesson(true);
 
     try {
       const topQuery = query(
@@ -192,8 +193,8 @@ export default function StudyHub() {
 
       setChapterTopics(topicsList);
       setSubtopicsMap(map);
-      await cacheService.set(`chapter_topics_${chapter.id}`, topicsList);
-      await cacheService.set(`chapter_subtopics_${chapter.id}`, map);
+      await cacheService.set(`chapter_topics_${chapter.id}`, topicsList, 24 * 60 * 60 * 1000);
+      await cacheService.set(`chapter_subtopics_${chapter.id}`, map, 24 * 60 * 60 * 1000);
 
       if (targetTopicIndex !== null) {
         setActiveTopicIndex(targetTopicIndex);
@@ -244,6 +245,7 @@ export default function StudyHub() {
           ? cached.find((c) => c.id === selectedChapter.id)
           : null;
       handleOpenChapter(currentMatch || cached[0]);
+      return; // Cache hit: 0 Firestore reads for chapters!
     } else {
       if (!selectedChapter || Number(selectedChapter.paper) !== Number(selectedPaper)) {
         setSelectedChapter(null);
@@ -261,7 +263,7 @@ export default function StudyHub() {
       remoteList.sort((a, b) => (Number(a.sequenceOrder) || 0) - (Number(b.sequenceOrder) || 0));
 
       setChapters(remoteList);
-      await cacheService.set(`chapters_paper_${selectedPaper}`, remoteList);
+      await cacheService.set(`chapters_paper_${selectedPaper}`, remoteList, 24 * 60 * 60 * 1000);
 
       if (remoteList.length > 0) {
         const currentMatch =

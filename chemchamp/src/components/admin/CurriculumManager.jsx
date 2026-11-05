@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { cacheService } from "../../services/cacheService";
+import { contentVersionService } from "../../services/contentVersionService";
 import { db } from "../../services/firebase";
 import {
   collection,
@@ -179,6 +180,7 @@ export default function CurriculumManager() {
       );
       setChapterModal({ open: false, data: null });
       cacheService.remove("chemchamp_all_chapters");
+      contentVersionService.bumpVersion("curriculum");
       fetchChapters();
     } catch (err) {
       alert("অধ্যায় সংরক্ষণ ব্যর্থ: " + err.message);
@@ -191,6 +193,7 @@ export default function CurriculumManager() {
     try {
       await deleteDoc(doc(db, "chapters", id));
       cacheService.remove("chemchamp_all_chapters");
+      contentVersionService.bumpVersion("curriculum");
       fetchChapters();
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);
@@ -215,6 +218,7 @@ export default function CurriculumManager() {
         { merge: true }
       );
       setTopicModal({ open: false, data: null, chapter: null });
+      contentVersionService.bumpVersion("curriculum");
       fetchTopicsForChapter(chapterId);
       // টপিক যোগ হলে সেই অধ্যায়টি এক্সপ্যান্ড করে রাখা
       setExpandedChapters((prev) => ({ ...prev, [chapterId]: true }));
@@ -228,6 +232,7 @@ export default function CurriculumManager() {
     if (!window.confirm("আপনি কি নিশ্চিতভাবে এই টপিকটি মুছে ফেলতে চান?")) return;
     try {
       await deleteDoc(doc(db, "topics", topicId));
+      contentVersionService.bumpVersion("curriculum");
       fetchTopicsForChapter(chapterId);
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);
@@ -296,6 +301,7 @@ export default function CurriculumManager() {
         { merge: true }
       );
       setSubtopicModal({ open: false, data: null, chapter: null, topic: null });
+      contentVersionService.bumpVersion("curriculum");
       fetchSubtopicsForTopic(topicId);
       // সাব-টপিক যোগ হলে টপিকটি এক্সপ্যান্ড করে রাখা
       setExpandedTopics((prev) => ({ ...prev, [topicId]: true }));
@@ -309,6 +315,7 @@ export default function CurriculumManager() {
     if (!window.confirm("আপনি কি নিশ্চিতভাবে এই সাব-টপিক ও লেকচার নোট মুছে ফেলতে চান?")) return;
     try {
       await deleteDoc(doc(db, "subtopics", subtopicId));
+      contentVersionService.bumpVersion("curriculum");
       fetchSubtopicsForTopic(topicId);
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);

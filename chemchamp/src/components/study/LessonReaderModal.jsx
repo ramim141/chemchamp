@@ -229,22 +229,29 @@ export default function LessonReaderModal({
     };
   }, []);
 
-  // এই টপিকের MCQ, CQ, SQ প্রশ্ন লোড করা
+  // এই টপিকের MCQ, CQ, SQ প্রশ্ন লোড করা (24h TTL Cache + limit 30)
   useEffect(() => {
     const fetchQuestions = async () => {
       if (!currentTopic?.id) return;
       setLoadingQuestions(true);
       try {
-        const qColl = collection(db, "questions");
-        let qQuery = query(qColl, where("topicId", "==", currentTopic.id));
-        let snap = await getDocs(qQuery);
+        const list = await cacheService.getOrFetch(
+          `topic_questions_${currentTopic.id}`,
+          async () => {
+            const qColl = collection(db, "questions");
+            let qQuery = query(qColl, where("topicId", "==", currentTopic.id), limit(30));
+            let snap = await getDocs(qQuery);
 
-        if (snap.empty && chapter?.id) {
-          qQuery = query(qColl, where("chapterId", "==", chapter.id));
-          snap = await getDocs(qQuery);
-        }
+            if (snap.empty && chapter?.id) {
+              qQuery = query(qColl, where("chapterId", "==", chapter.id), limit(30));
+              snap = await getDocs(qQuery);
+            }
 
-        const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+            return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          },
+          24 * 60 * 60 * 1000, // 24h TTL
+          []
+        );
         setTopicQuestions(list);
       } catch (err) {
         console.warn("Could not load topic questions:", err);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { cacheService } from "../../../services/cacheService";
+import { contentVersionService } from "../../../services/contentVersionService";
 import { db } from "../../../services/firebase";
 import {
   collection,
@@ -328,6 +329,7 @@ export default function JsonBatchEditor({
       }
 
       cacheService.remove("chemchamp_all_questions");
+      contentVersionService.bumpVersion("questions");
 
       const successMsg = dbDuplicateCount > 0
         ? `সফলভাবে ${toUpload.length}টি নতুন ${selectedType} প্রশ্ন সেভ হয়েছে! (${dbDuplicateCount}টি পূর্বের ডুপ্লিকেট প্রশ্ন ডাটাবেজে থাকায় স্বয়ংক্রিয়ভাবে বাদ দেওয়া হয়েছে) 🚀`

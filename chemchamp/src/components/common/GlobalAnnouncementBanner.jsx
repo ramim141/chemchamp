@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Megaphone, X, AlertTriangle, Gift, Sparkles, Info, ArrowRight } from "lucide-react";
 import { db } from "../../services/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import { cacheService } from "../../services/cacheService";
 import { useAuth } from "../../context/AuthContext";
 
 export default function GlobalAnnouncementBanner() {
@@ -27,14 +28,18 @@ export default function GlobalAnnouncementBanner() {
   useEffect(() => {
     const fetchLive = async () => {
       try {
-        const snap = await getDocs(collection(db, "announcements"));
-        const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        const list = await cacheService.getOrFetch(
+          "chemchamp_announcements_cache",
+          async () => {
+            const snap = await getDocs(query(collection(db, "announcements"), limit(10)));
+            return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          },
+          10 * 60 * 1000, // 10 min TTL
+          []
+        );
         setAnnouncements(list);
-        try {
-          localStorage.setItem("chemchamp_cached_announcements", JSON.stringify(list));
-        } catch {}
       } catch (err) {
-        // silent fail - use cached
+        // silent fail
       }
     };
     fetchLive();

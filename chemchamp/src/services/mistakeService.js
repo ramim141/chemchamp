@@ -1,7 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, getDocs, setDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
-
-const DEFAULT_MISTAKES = [];
+import { collection, doc, getDocs, setDoc, deleteDoc, writeBatch, limit, query, serverTimestamp } from "firebase/firestore";
 
 export const ERROR_CATEGORIES = [
   { id: "থিওরি ল্যাক", label: "থিওরি ল্যাক", color: "text-rose-400 bg-rose-500/10 border-rose-500/30" },
@@ -39,7 +37,7 @@ export const mistakeService = {
     if (!uid) return localList;
 
     try {
-      const snap = await getDocs(collection(db, "users", uid, "mistakeBox"));
+      const snap = await getDocs(query(collection(db, "users", uid, "mistakeBox"), limit(50)));
       if (!snap.empty) {
         const remoteList = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
         // Merge remote + local by id
@@ -84,20 +82,17 @@ export const mistakeService = {
     const updated = Array.from(map.values());
     this.saveLocalMistakes(uid, updated);
 
-    if (uid) {
-      for (const entry of newEntries) {
-        try {
-          await setDoc(
-            doc(db, "users", uid, "mistakeBox", entry.id),
-            {
-              ...entry,
-              timestamp: serverTimestamp(),
-            },
-            { merge: true }
-          );
-        } catch (err) {
-          console.warn("Could not sync mistake to Firestore:", err);
-        }
+    if (uid && newEntries.length > 0) {
+      try {
+        const batch = writeBatch(db);
+        // Firestore batch max 500 ops
+        newEntries.slice(0, 50).forEach((entry) => {
+          const mRef = doc(db, "users", uid, "mistakeBox", entry.id);
+          batch.set(mRef, { ...entry, timestamp: serverTimestamp() }, { merge: true });
+        });
+        await batch.commit();
+      } catch (err) {
+        console.warn("Batch sync mistake to Firestore warning:", err);
       }
     }
     return updated;

@@ -186,7 +186,7 @@ class SoundService {
 
       osc.start(now);
       osc.stop(now + 0.05);
-    } catch (e) {
+    } catch {
       // ignore
     }
   }

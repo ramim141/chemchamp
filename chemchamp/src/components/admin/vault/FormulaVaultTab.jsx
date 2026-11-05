@@ -1,3 +1,4 @@
+import { contentVersionService } from "../../../services/contentVersionService";
 import React, { useState, useEffect } from "react";
 import { cacheService } from "../../../services/cacheService";
 import { db } from "../../../services/firebase";
@@ -141,6 +142,7 @@ export default function FormulaVaultTab() {
       );
       setModal({ open: false, data: null });
       cacheService.remove("vault_formulas");
+      contentVersionService.bumpVersion("vault");
       fetchFormulas();
     } catch (err) {
       alert("সংরক্ষণ ব্যর্থ: " + err.message);
@@ -152,6 +154,7 @@ export default function FormulaVaultTab() {
     try {
       await deleteDoc(doc(db, "formulas", id));
       cacheService.remove("vault_formulas");
+      contentVersionService.bumpVersion("vault");
       setFormulas((prev) => prev.filter((f) => f.id !== id));
     } catch (err) {
       alert("ডিলিট ব্যর্থ: " + err.message);
@@ -195,6 +198,7 @@ export default function FormulaVaultTab() {
 
       await batch.commit();
       cacheService.remove("vault_formulas");
+      contentVersionService.bumpVersion("vault");
       alert(`সফলভাবে ${parsed.length}টি ফর্মুলা আপলোড করা হয়েছে!`);
       setIsBulkOpen(false);
       setJsonInput("");

@@ -24,17 +24,10 @@ export default function Landing() {
   const [landingConfig, setLandingConfig] = useState(() => landingConfigService.getLocalConfig());
 
   useEffect(() => {
-    // 1. Fetch remote config immediately
-    landingConfigService.getConfig().then((cfg) => setLandingConfig(cfg));
-
-    // 2. Real-time snapshot listener so when Admin modifies any landing item, home page updates instantly
-    const unsubscribe = landingConfigService.subscribe((updatedCfg) => {
-      setLandingConfig(updatedCfg);
+    // 1-Hour cached fetch (Zero persistent onSnapshot listeners for anonymous traffic)
+    landingConfigService.getConfig().then((cfg) => {
+      if (cfg) setLandingConfig(cfg);
     });
-
-    return () => {
-      if (typeof unsubscribe === "function") unsubscribe();
-    };
   }, []);
 
   const handleRegisterAction = async () => {

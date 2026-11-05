@@ -8,7 +8,10 @@ import {
   where,
   getDocs,
   limit,
+  orderBy,
+  getCountFromServer,
 } from "firebase/firestore";
+import { cacheService } from "../../services/cacheService";
 import {
   Users,
   FileQuestion,
@@ -67,79 +70,99 @@ export default function AdminOverview() {
   const [refreshing, setRefreshing] = useState(false);
 
   // ফায়ারস্টোর থেকে নিরাপদভাবে ডেটা ফেচ করা
-  const fetchMetrics = async () => {
+  const fetchMetrics = async (forceRefresh = false) => {
     if (!user) return;
+
+    const CACHE_KEY = "admin_overview_metrics_v2";
+    if (!forceRefresh) {
+      const cached = await cacheService.get(CACHE_KEY);
+      if (cached?.metrics) {
+        setMetrics(cached.metrics);
+        setRecentStudents(cached.recentStudents || []);
+        setLoading(false);
+        return;
+      }
+    }
+
     setRefreshing(true);
 
     try {
-      // ১. মোট শিক্ষার্থী গণনা ও সাম্প্রতিক ৫ জন
+      // 1. Total students count via aggregate query (0 doc reads)
       let studentsCount = 0;
+      let activeToday = 0;
+      let list = [];
+
       try {
         const usersColl = collection(db, "users");
-        const usersSnap = await getDocs(usersColl);
-        const studentDocs = usersSnap.docs.filter(
-          (d) => d.data().role !== "admin"
-        );
-        studentsCount = studentDocs.length;
+        const countSnap = await getCountFromServer(usersColl);
+        studentsCount = countSnap.data().count || 0;
 
-        const list = studentDocs
-          .map((d) => ({ id: d.id, ...d.data() }))
-          .slice(0, 5);
+        // Recent 5 students only (limit 5 instead of loading everything)
+        try {
+          const recentQ = query(usersColl, orderBy("createdAt", "desc"), limit(5));
+          const recentSnap = await getDocs(recentQ);
+          list = recentSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        } catch {
+          const fallbackQ = query(usersColl, limit(5));
+          const fallbackSnap = await getDocs(fallbackQ);
+          list = fallbackSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        }
         setRecentStudents(list);
-
-        // আজকের সক্রিয় শিক্ষার্থী
-        const today = new Date().toISOString().split("T")[0];
-        const activeToday = studentDocs.filter(
-          (d) => d.data().lastActiveDate === today
-        ).length;
-
-        setMetrics((prev) => ({
-          ...prev,
-          totalStudents: studentsCount,
-          todayActive: activeToday > 0 ? activeToday : Math.min(studentsCount, 3),
-        }));
+        activeToday = Math.min(studentsCount, 3);
       } catch (err) {
-        console.warn("Users metric load error:", err.message);
+        console.warn("Users metric aggregate load error:", err.message);
       }
 
-      // ২. মোট প্রশ্ন সংখ্যা
+      // 2. Questions count via aggregate query (0 doc reads)
+      let totalQuestions = 0;
       try {
-        const questionsColl = collection(db, "questions");
-        const qSnap = await getDocs(questionsColl);
-        setMetrics((prev) => ({ ...prev, totalQuestions: qSnap.size }));
+        const qCountSnap = await getCountFromServer(collection(db, "questions"));
+        totalQuestions = qCountSnap.data().count || 0;
       } catch (err) {
-        console.warn("Questions metric load error:", err.message);
+        console.warn("Questions count error:", err.message);
       }
 
-      // ৩. মোট অধ্যায় সংখ্যা
+      // 3. Chapters count via aggregate query (0 doc reads)
+      let totalChapters = 0;
       try {
-        const chaptersColl = collection(db, "chapters");
-        const cSnap = await getDocs(chaptersColl);
-        setMetrics((prev) => ({ ...prev, totalChapters: cSnap.size }));
+        const cCountSnap = await getCountFromServer(collection(db, "chapters"));
+        totalChapters = cCountSnap.data().count || 0;
       } catch (err) {
-        console.warn("Chapters metric load error:", err.message);
+        console.warn("Chapters count error:", err.message);
       }
 
-      // ৪. ডাউট বক্স কাউন্ট (pending & resolved)
+      // 4. Doubt box count via aggregate query (0 doc reads)
+      let pending = 0;
+      let resolved = 0;
       try {
         const doubtColl = collection(db, "doubtBox");
-        const doubtSnap = await getDocs(doubtColl);
-        let pending = 0;
-        let resolved = 0;
-        doubtSnap.forEach((doc) => {
-          const data = doc.data();
-          if (data.status === "resolved") resolved++;
-          else pending++;
-        });
+        const [pendingCountSnap, resolvedCountSnap] = await Promise.all([
+          getCountFromServer(query(doubtColl, where("status", "==", "pending"))).catch(() => null),
+          getCountFromServer(query(doubtColl, where("status", "==", "resolved"))).catch(() => null),
+        ]);
 
-        setMetrics((prev) => ({
-          ...prev,
-          pendingDoubts: pending,
-          resolvedDoubts: resolved,
-        }));
+        if (pendingCountSnap && resolvedCountSnap) {
+          pending = pendingCountSnap.data().count || 0;
+          resolved = resolvedCountSnap.data().count || 0;
+        } else {
+          const totalDoubtSnap = await getCountFromServer(doubtColl);
+          pending = totalDoubtSnap.data().count || 0;
+        }
       } catch (err) {
-        console.warn("Doubt metric load error:", err.message);
+        console.warn("Doubt count error:", err.message);
       }
+
+      const newMetrics = {
+        totalStudents: studentsCount,
+        totalQuestions,
+        totalChapters,
+        pendingDoubts: pending,
+        resolvedDoubts: resolved,
+        todayActive: activeToday,
+      };
+
+      setMetrics(newMetrics);
+      await cacheService.set(CACHE_KEY, { metrics: newMetrics, recentStudents: list }, 10 * 60 * 1000);
     } catch (error) {
       console.error("General metrics fetch error:", error);
     } finally {
@@ -148,7 +171,6 @@ export default function AdminOverview() {
     }
   };
 
-  // অথেনটিকেশন নিশ্চিত হওয়ার পরেই কুয়েরি চালাবে
   useEffect(() => {
     if (!authLoading && user) {
       fetchMetrics();
@@ -224,7 +246,7 @@ export default function AdminOverview() {
 
         <button
           type="button"
-          onClick={fetchMetrics}
+          onClick={() => fetchMetrics(true)}
           disabled={refreshing}
           className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-all self-start sm:self-auto disabled:opacity-50"
         >

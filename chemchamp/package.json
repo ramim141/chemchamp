@@ -8,6 +8,7 @@
     "build": "vite build",
     "postbuild": "node scripts/prerender.js",
     "lint": "eslint .",
+    "test": "node --test src/services/__tests__/cacheService.test.js",
     "preview": "vite preview"
   },
   "dependencies": {

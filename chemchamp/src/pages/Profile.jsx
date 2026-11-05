@@ -134,9 +134,16 @@ export default function Profile() {
     if (!user?.uid) return;
     setLoadingDoubts(true);
     try {
+      const cached = await cacheService.get(`user_doubts_${user.uid}`);
+      if (cached) {
+        setMyDoubts(cached);
+        setLoadingDoubts(false);
+        return;
+      }
       const q = query(
         collection(db, "doubtBox"),
-        where("studentUid", "==", user.uid)
+        where("studentUid", "==", user.uid),
+        limit(20)
       );
       const snap = await getDocs(q);
       const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
@@ -146,6 +153,7 @@ export default function Profile() {
         return tB - tA;
       });
       setMyDoubts(list);
+      await cacheService.set(`user_doubts_${user.uid}`, list, 10 * 60 * 1000); // 10 min
     } catch (err) {
       console.warn("Could not fetch user doubts:", err);
     } finally {

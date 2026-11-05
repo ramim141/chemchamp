@@ -10,3 +10,4 @@ export const fireConfetti = async (options) => {
     console.warn("Confetti dynamic load failed:", err);
   }
 };
+
