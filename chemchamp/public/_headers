@@ -1,0 +1,31 @@
+# ChemChamp Edge Headers for Cloudflare Pages
+
+# 1. Immutable Long-Term Caching for Hashed Bundles & Assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 2. Service Worker (Never cache long-term, must check for updates)
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 3. HTML Pages (Immediate fresh delivery)
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 4. Search & PWA Manifest
+/robots.txt
+  Cache-Control: public, max-age=3600
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/site.webmanifest
+  Cache-Control: public, max-age=3600
+
+# 5. Global Security Headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin-allow-popups

@@ -106,5 +106,11 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow write: if isAuthenticated();
     }
+
+    // ৭. মেটাডাটা ও কন্টেন্ট ভার্সন (ক্যাশ সিঙ্কের জন্য পাবলিক রিড, রাইট অ্যাডমিন/অথ)
+    match /meta/{metaId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
   }
 }

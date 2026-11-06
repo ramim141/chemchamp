@@ -1,0 +1,3 @@
+# ChemChamp SPA Redirects for Cloudflare Pages & Netlify
+# Ensures direct loads and refreshes on dynamic routes (/dashboard, /study, /exams, /vault, /admin) rewrite to index.html
+/*  /index.html  200

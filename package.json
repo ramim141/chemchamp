@@ -1,0 +1,13 @@
+{
+  "name": "chemchamp-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix chemchamp run dev",
+    "build": "npm --prefix chemchamp run build",
+    "test": "npm --prefix chemchamp test",
+    "lint": "npm --prefix chemchamp run lint",
+    "preview": "npm --prefix chemchamp run preview"
+  }
+}
