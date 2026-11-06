@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chemchamp",
+  "main": "chemchamp/src/main.jsx",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "chemchamp/dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "single-page-application"
+  }
+}
