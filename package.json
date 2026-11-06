@@ -3,9 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "chemchamp"
+  ],
   "scripts": {
-    "dev": "npm --prefix chemchamp run dev",
     "build": "npm --prefix chemchamp run build",
+    "dev": "npm --prefix chemchamp run dev",
     "test": "npm --prefix chemchamp test",
     "lint": "npm --prefix chemchamp run lint",
     "preview": "npm --prefix chemchamp run preview"
