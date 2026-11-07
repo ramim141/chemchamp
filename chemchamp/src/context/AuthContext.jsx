@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useRef } from "react";
 import { auth, db, googleProvider } from "../services/firebase";
 import {
   signInWithPopup,
@@ -80,6 +80,47 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(auth.currentUser || null);
   const [loading, setLoading] = useState(true);
 
+  const pendingUpdatesRef = useRef({});
+  const flushTimerRef = useRef(null);
+
+  const deepMerge = (target = {}, source = {}) => {
+    const output = { ...target };
+    for (const key of Object.keys(source)) {
+      if (
+        source[key] &&
+        typeof source[key] === "object" &&
+        !Array.isArray(source[key]) &&
+        typeof target[key] === "object"
+      ) {
+        output[key] = deepMerge(target[key] || {}, source[key]);
+      } else {
+        output[key] = source[key];
+      }
+    }
+    return output;
+  };
+
+  const flushPendingUpdates = async () => {
+    const currentUid = auth.currentUser?.uid || user?.uid;
+    if (!currentUid || !pendingUpdatesRef.current || Object.keys(pendingUpdatesRef.current).length === 0) {
+      return;
+    }
+    const updates = { ...pendingUpdatesRef.current };
+    pendingUpdatesRef.current = {};
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
+    }
+    try {
+      const userDocRef = doc(db, "users", currentUid);
+      await setDoc(userDocRef, updates, { merge: true });
+      localStorage.removeItem(PENDING_SYNC_KEY);
+    } catch (err) {
+      console.warn("Flush pending updates failed, restoring queue:", err);
+      pendingUpdatesRef.current = deepMerge(updates, pendingUpdatesRef.current);
+    }
+  };
+
   const updateProfileState = (newProfile) => {
     setProfile(newProfile);
     try {
@@ -114,7 +155,25 @@ export const AuthProvider = ({ children }) => {
     window.addEventListener("online", syncPendingOfflineData);
     syncPendingOfflineData();
     contentVersionService.checkAndSyncVersion();
-    return () => window.removeEventListener("online", syncPendingOfflineData);
+
+    const handleFlushOnExit = () => {
+      flushPendingUpdates();
+    };
+    window.addEventListener("pagehide", handleFlushOnExit);
+    window.addEventListener("beforeunload", handleFlushOnExit);
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        handleFlushOnExit();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      window.removeEventListener("online", syncPendingOfflineData);
+      window.removeEventListener("pagehide", handleFlushOnExit);
+      window.removeEventListener("beforeunload", handleFlushOnExit);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [user]);
 
   // ইউজার প্রোফাইল লোকাল ও ফায়ারস্টোরে অপ্টিমাইজড ডিবাউন্সড ব্যাচ রাইট (30s)
